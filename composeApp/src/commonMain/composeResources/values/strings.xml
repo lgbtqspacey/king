@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Admin Portal</string>
 
+<!-- errors -->
+    <string name="something_went_wrong">Algo errado aconteceu! \nTente novamente mais tarde.</string>
+    <string name="invalid_credentials">Username e/ou senha estão incorretos</string>
+    <string name="user_not_found">Usuário não encontrado. \nVerifique os dados e tente novamente.</string>
+
 <!-- login -->
     <string name="email_or_username">Email ou Username</string>
     <string name="password">Senha</string>

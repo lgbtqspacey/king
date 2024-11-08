@@ -1,4 +1,4 @@
-package com.lgbtqspacey.admin.features.login
+package com.lgbtqspacey.admin.features.auth
 
 import admin_portal.composeapp.generated.resources.*
 import androidx.compose.foundation.layout.Box
@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.lgbtqspacey.admin.backend.router.Auth
+import com.lgbtqspacey.admin.backend.adapter.AuthAdapter
 import com.lgbtqspacey.admin.getPlatform
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
@@ -40,7 +40,7 @@ fun Login() {
         val coroutineScope = rememberCoroutineScope()
 
         var password by remember { mutableStateOf("") }
-        var emailOrUsername by remember { mutableStateOf("") }
+        var username by remember { mutableStateOf("") }
         var isPasswordVisible by remember { mutableStateOf(false) }
         var isError by remember { mutableStateOf(false) }
 
@@ -49,14 +49,13 @@ fun Login() {
         val passwordToggleDescription: String?
 
         val tryLogin: () -> Unit = {
-            if (password.isEmpty() || emailOrUsername.isEmpty()) {
+            if (password.isEmpty() || username.isEmpty()) {
                 isError = true
             } else {
                 coroutineScope.launch {
-                    val response = Auth.teste()
-                    println(response)
+                    val response = AuthAdapter().login(username, password)
+                    println("login response: $response")
                 }
-                println("login")
             }
         }
 
@@ -80,9 +79,9 @@ fun Login() {
                 Text(text = stringResource(Res.string.log_into_account))
 
                 OutlinedTextField(
-                    value = emailOrUsername,
-                    onValueChange = { emailOrUsername = it },
-                    label = { Text(stringResource(Res.string.email_or_username)) },
+                    value = username,
+                    onValueChange = { username = it },
+                    label = { Text(stringResource(Res.string.username)) },
                 )
 
                 OutlinedTextField(

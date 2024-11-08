@@ -2,12 +2,13 @@ package com.lgbtqspacey.admin.backend.model
 
 import kotlinx.serialization.Serializable
 
-/**
- * @param password user password
- * @param identifier email or username
- */
 @Serializable
-data class Login(
+data class LoginRequest(
+    val username: String,
     val password: String,
-    val identifier: String,
+)
+
+@Serializable
+data class LoginResponse(
+    val token: String? = null
 )

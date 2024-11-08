@@ -2,7 +2,7 @@ package com.lgbtqspacey.admin
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.lgbtqspacey.admin.features.login.Login
+import com.lgbtqspacey.admin.features.auth.Login
 
 fun main() = application {
     Window(
