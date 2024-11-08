@@ -1,8 +1,12 @@
 package com.lgbtqspacey.admin.backend.router
 
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+
 class Endpoints {
     companion object {
         const val HOST = "http://localhost:3000"
+        val CLIENT = HttpClient(OkHttp)
     }
 
     object Auth {
