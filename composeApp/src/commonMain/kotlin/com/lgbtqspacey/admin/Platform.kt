@@ -1,8 +1,8 @@
 package com.lgbtqspacey.admin
 
-interface Platform {
-    val name: String
-    val version: String
+abstract class  Platform {
+    open val name: String = ""
+    open val version: String = "1.0.0"
 }
 
 expect fun getPlatform(): Platform

@@ -86,7 +86,7 @@ compose.desktop {
         mainClass = "com.lgbtqspacey.admin.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.Deb)
+            targetFormats(TargetFormat.Exe)
             packageName = "com.lgbtqspacey.admin"
             packageVersion = "1.0.0"
         }
