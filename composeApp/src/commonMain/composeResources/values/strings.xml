@@ -3,11 +3,11 @@
 
 <!-- errors -->
     <string name="something_went_wrong">Algo errado aconteceu! \nTente novamente mais tarde.</string>
-    <string name="invalid_credentials">Username e/ou senha estão incorretos</string>
+    <string name="invalid_credentials">Usuário e/ou senha estão incorretos</string>
     <string name="user_not_found">Usuário não encontrado. \nVerifique os dados e tente novamente.</string>
+    <string name="fill_all_fields">Preencha todos os campos</string>
 
 <!-- login -->
-    <string name="email_or_username">Email ou Username</string>
     <string name="password">Senha</string>
     <string name="hide_password">Ocultar senha</string>
     <string name="show_password">Mostrar senha</string>
@@ -15,7 +15,7 @@
 <!-- Labels -->
     <string name="continue">Continuar</string>
     <string name="email">Email</string>
-    <string name="username">Username</string>
+    <string name="username">Usuário</string>
     <string name="name">Nome</string>
     <string name="pronouns">Pronomes</string>
     <string name="roles">Cargos</string>
