@@ -2,10 +2,11 @@
     <string name="app_name">Admin Portal</string>
 
 <!-- errors -->
-    <string name="something_went_wrong">Algo errado aconteceu! \nTente novamente mais tarde.</string>
+    <string name="something_went_wrong">Ops! Algo não saiu como esperado!\nTente novamente mais tarde.</string>
     <string name="invalid_credentials">Usuário e/ou senha estão incorretos</string>
     <string name="user_not_found">Usuário não encontrado. \nVerifique os dados e tente novamente.</string>
     <string name="fill_all_fields">Preencha todos os campos</string>
+    <string name="error_logging_out">Não foi possível sair.\nTente novamente mais tarde.</string>
 
 <!-- login -->
     <string name="password">Senha</string>

@@ -57,4 +57,9 @@ class Backend {
             const val ROLES = "$HOST/api/v1/admin/roles"
         }
     }
+
+    object Headers {
+        const val SESSION_TOKEN = "session-token"
+        const val SESSION_EXPIRES_AT = "session-expires-at"
+    }
 }

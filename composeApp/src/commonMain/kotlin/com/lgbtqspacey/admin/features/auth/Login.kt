@@ -16,12 +16,12 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
@@ -38,13 +38,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.lgbtqspacey.admin.backend.adapter.AuthAdapter
-import com.lgbtqspacey.admin.components.Dimensions
+import com.lgbtqspacey.admin.helpers.Dimensions
 import com.lgbtqspacey.admin.getPlatform
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -63,11 +68,16 @@ fun Login() {
         var isPasswordVisible by remember { mutableStateOf(false) }
         var showError by remember { mutableStateOf(false) }
         var errorMessage by remember { mutableStateOf("") }
+        var errorCode by remember { mutableStateOf("") }
 
         val passwordVisualTransformation: VisualTransformation?
         val passwordToggleImage: ImageVector?
         val passwordToggleDescription: String?
 
+        /**
+         * Call login method from backend
+         * @see AuthAdapter
+         */
         val tryLogin: () -> Unit = {
             if (password.isEmpty() || username.isEmpty()) {
                 coroutineScope.launch {
@@ -79,16 +89,20 @@ fun Login() {
                     val result = AuthAdapter().login(username, password)
 
                     if (result.isSuccess) {
-                        // navigate
+                        // todo: navigate
                         println("sucesso")
                     } else {
-                        errorMessage = result.errorMessage ?: ""
+                        errorMessage = result.errorMessage
+                        errorCode = "Código do erro: ${result.errorCode}"
                         showError = true
                     }
                 }
             }
         }
 
+        /**
+         * Toggle password visibility
+         */
         if (isPasswordVisible) {
             passwordVisualTransformation = VisualTransformation.None
             passwordToggleImage = vectorResource(Res.drawable.ic_visibility_off)
@@ -99,6 +113,9 @@ fun Login() {
             passwordToggleDescription = stringResource(Res.string.show_password)
         }
 
+        /**
+         * Screen container
+         */
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxWidth()
@@ -109,6 +126,9 @@ fun Login() {
                     .align(Alignment.TopCenter)
                     .align(Alignment.BottomCenter)
             ) {
+                /**
+                 * Login form
+                 */
                 Text(
                     text = stringResource(Res.string.log_into_account),
                     fontSize = Dimensions.SIZE_32.sp(),
@@ -141,22 +161,40 @@ fun Login() {
                     },
                 )
 
+                /**
+                 * Container to display errors
+                 */
                 AnimatedVisibility(
                     visible = showError,
                     enter = fadeIn(initialAlpha = 0.4f),
                     exit = fadeOut(animationSpec = tween(durationMillis = 200)),
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = Dimensions.SIZE_8.dp())
                 ) {
-                    Text(
-                        text = errorMessage,
-                        fontSize = Dimensions.SIZE_12.sp(),
-                        color = Color.Red,
-                        modifier = Modifier
-                            .padding(top = Dimensions.SIZE_16.dp())
-                            .align(Alignment.CenterHorizontally),
-                    )
+                    Column {
+                        Text(
+                            text = errorMessage,
+                            fontSize = Dimensions.SIZE_12.sp(),
+                            color = Color.Red,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally),
+                        )
+                        Text(
+                            text = errorCode,
+                            fontSize = Dimensions.SIZE_12.sp(),
+                            fontWeight = FontWeight.Bold,
+                            color = Color.DarkGray,
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally),
+                            )
+                    }
                 }
 
+                /**
+                 * Login button
+                 */
                 Button(
                     onClick = {
                         tryLogin()
@@ -168,6 +206,9 @@ fun Login() {
                     Text(stringResource(Res.string.`continue`))
                 }
 
+                /**
+                 * Foot notes
+                 */
                 Text(
                     text = stringResource(Res.string.problems_to_log_in),
                     fontSize = Dimensions.SIZE_16.sp(),
@@ -183,6 +224,10 @@ fun Login() {
                 )
 
             }
+
+            /**
+             * App version
+             */
             Text(
                 text = "v${getPlatform().version}",
                 fontSize = Dimensions.SIZE_12.sp(),

@@ -1,4 +1,4 @@
-package com.lgbtqspacey.admin.components
+package com.lgbtqspacey.admin.helpers
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
