@@ -62,8 +62,8 @@ class AuthAdapter {
             val response = AuthRouter().logout(sessionToken)
 
             if (response?.status == HttpStatusCode.OK) {
-                    // delete session from db
-                    result = ApiResult(true)
+                // todo: delete session from db
+                result = ApiResult(true)
             } else {
                 result = ApiResult(
                     isSuccess = false,
@@ -87,11 +87,11 @@ class AuthAdapter {
 
             val response = AuthRouter().logoutAllDevices(userId)
 
-            result = if (response?.status == HttpStatusCode.OK) {
-                // delete session from db
-                ApiResult(true)
+            if (response?.status == HttpStatusCode.OK) {
+                // todo: delete session from db
+                result = ApiResult(true)
             } else {
-                ApiResult(
+                result = ApiResult(
                     isSuccess = false,
                     errorCode = response?.status?.value,
                     errorMessage = getString(Res.string.error_logging_out)
