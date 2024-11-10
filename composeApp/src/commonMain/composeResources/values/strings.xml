@@ -30,4 +30,6 @@
     <string name="log_into_account">Entrar na conta</string>
     <string name="problems_to_log_in">Problemas para logar?</string>
     <string name="open_a_ticket">Abra um ticket no Discord</string>
+    <string name="toggle_light_mode">Mudar para modo claro</string>
+    <string name="toggle_dark_mode">Mudar para modo escuro</string>
 </resources>

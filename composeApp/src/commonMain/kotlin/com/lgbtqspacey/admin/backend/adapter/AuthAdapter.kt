@@ -1,13 +1,13 @@
 package com.lgbtqspacey.admin.backend.adapter
 
-import admin_portal.composeapp.generated.resources.Res
-import admin_portal.composeapp.generated.resources.error_logging_out
-import admin_portal.composeapp.generated.resources.invalid_credentials
-import admin_portal.composeapp.generated.resources.something_went_wrong
-import admin_portal.composeapp.generated.resources.user_not_found
 import com.lgbtqspacey.admin.backend.model.ApiResult
 import com.lgbtqspacey.admin.backend.router.AuthRouter
 import com.lgbtqspacey.admin.backend.router.Backend
+import com.lgbtqspacey.admin.commonMain.composeResources.Res
+import com.lgbtqspacey.admin.commonMain.composeResources.error_logging_out
+import com.lgbtqspacey.admin.commonMain.composeResources.invalid_credentials
+import com.lgbtqspacey.admin.commonMain.composeResources.something_went_wrong
+import com.lgbtqspacey.admin.commonMain.composeResources.user_not_found
 import com.lgbtqspacey.admin.helpers.Logger
 import io.ktor.http.HttpStatusCode
 import org.jetbrains.compose.resources.getString

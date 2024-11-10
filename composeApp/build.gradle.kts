@@ -39,6 +39,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.bundles.ktor.common)
             implementation(libs.room.runtime)
+            implementation(libs.androidx.material3.desktop)
 //            implementation(libs.navigation.compose)
         }
         desktopMain.dependencies {
@@ -91,4 +92,10 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+compose.resources {
+    publicResClass = false
+    packageOfResClass = "com.lgbtqspacey.admin.commonMain.composeResources"
+    generateResClass = auto
 }

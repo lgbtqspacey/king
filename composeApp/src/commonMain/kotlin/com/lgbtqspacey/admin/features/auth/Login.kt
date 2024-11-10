@@ -1,34 +1,28 @@
 package com.lgbtqspacey.admin.features.auth
 
-import admin_portal.composeapp.generated.resources.Res
-import admin_portal.composeapp.generated.resources.`continue`
-import admin_portal.composeapp.generated.resources.fill_all_fields
-import admin_portal.composeapp.generated.resources.hide_password
-import admin_portal.composeapp.generated.resources.ic_visibility
-import admin_portal.composeapp.generated.resources.ic_visibility_off
-import admin_portal.composeapp.generated.resources.log_into_account
-import admin_portal.composeapp.generated.resources.open_a_ticket
-import admin_portal.composeapp.generated.resources.password
-import admin_portal.composeapp.generated.resources.problems_to_log_in
-import admin_portal.composeapp.generated.resources.show_password
-import admin_portal.composeapp.generated.resources.username
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,20 +31,32 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.lgbtqspacey.admin.backend.adapter.AuthAdapter
-import com.lgbtqspacey.admin.helpers.Dimensions
+import com.lgbtqspacey.admin.commonMain.composeResources.Res
+import com.lgbtqspacey.admin.commonMain.composeResources.`continue`
+import com.lgbtqspacey.admin.commonMain.composeResources.fill_all_fields
+import com.lgbtqspacey.admin.commonMain.composeResources.hide_password
+import com.lgbtqspacey.admin.commonMain.composeResources.ic_dark_mode
+import com.lgbtqspacey.admin.commonMain.composeResources.ic_light_mode
+import com.lgbtqspacey.admin.commonMain.composeResources.ic_visibility
+import com.lgbtqspacey.admin.commonMain.composeResources.ic_visibility_off
+import com.lgbtqspacey.admin.commonMain.composeResources.log_into_account
+import com.lgbtqspacey.admin.commonMain.composeResources.open_a_ticket
+import com.lgbtqspacey.admin.commonMain.composeResources.password
+import com.lgbtqspacey.admin.commonMain.composeResources.problems_to_log_in
+import com.lgbtqspacey.admin.commonMain.composeResources.show_password
+import com.lgbtqspacey.admin.commonMain.composeResources.toggle_dark_mode
+import com.lgbtqspacey.admin.commonMain.composeResources.toggle_light_mode
+import com.lgbtqspacey.admin.commonMain.composeResources.username
 import com.lgbtqspacey.admin.getPlatform
+import com.lgbtqspacey.admin.helpers.Dimensions
+import com.lgbtqspacey.admin.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -60,7 +66,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun Login() {
-    MaterialTheme {
+    var isDarkMode by remember { mutableStateOf(false) }
+    AppTheme(isDarkMode) {
         val coroutineScope = rememberCoroutineScope()
 
         var password by remember { mutableStateOf("") }
@@ -118,7 +125,9 @@ fun Login() {
          */
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
         ) {
             Column(
                 modifier = Modifier
@@ -132,7 +141,8 @@ fun Login() {
                 Text(
                     text = stringResource(Res.string.log_into_account),
                     fontSize = Dimensions.SIZE_32.sp(),
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
 
                 OutlinedTextField(
@@ -141,8 +151,10 @@ fun Login() {
                         username = it
                         showError = false
                     },
+                    singleLine = true,
                     label = { Text(stringResource(Res.string.username)) },
-                    modifier = Modifier.padding(top = Dimensions.SIZE_16.dp())
+                    modifier = Modifier.padding(top = Dimensions.SIZE_16.dp()),
+                    colors = TextFieldDefaults.colors(MaterialTheme.colorScheme.primary)
                 )
 
                 OutlinedTextField(
@@ -151,9 +163,11 @@ fun Login() {
                         password = it
                         showError = false
                     },
+                    singleLine = true,
                     label = { Text(stringResource(Res.string.password)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     visualTransformation = passwordVisualTransformation,
+                    colors = TextFieldDefaults.colors(MaterialTheme.colorScheme.primary),
                     trailingIcon = {
                         IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                             Icon(passwordToggleImage, passwordToggleDescription)
@@ -176,7 +190,7 @@ fun Login() {
                         Text(
                             text = errorMessage,
                             fontSize = Dimensions.SIZE_12.sp(),
-                            color = Color.Red,
+                            color = MaterialTheme.colorScheme.error,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally),
@@ -185,10 +199,10 @@ fun Login() {
                             text = errorCode,
                             fontSize = Dimensions.SIZE_12.sp(),
                             fontWeight = FontWeight.Bold,
-                            color = Color.DarkGray,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally),
-                            )
+                        )
                     }
                 }
 
@@ -212,6 +226,7 @@ fun Login() {
                 Text(
                     text = stringResource(Res.string.problems_to_log_in),
                     fontSize = Dimensions.SIZE_16.sp(),
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
                         .padding(top = Dimensions.SIZE_16.dp())
                         .align(Alignment.CenterHorizontally)
@@ -219,6 +234,7 @@ fun Login() {
                 Text(
                     text = stringResource(Res.string.open_a_ticket),
                     fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.Companion
                         .align(Alignment.CenterHorizontally)
                 )
@@ -231,10 +247,35 @@ fun Login() {
             Text(
                 text = "v${getPlatform().version}",
                 fontSize = Dimensions.SIZE_12.sp(),
-                modifier = Modifier.align(Alignment.TopStart)
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+
+            /**
+             * Toggle theme
+             */
+            Switch(
+                checked = isDarkMode,
+                onCheckedChange = { isDarkMode = !isDarkMode },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(Dimensions.SIZE_4.dp()),
+                thumbContent = {
+                    if (isDarkMode) {
+                        Icon(
+                            vectorResource(Res.drawable.ic_dark_mode),
+                            stringResource(Res.string.toggle_light_mode),
+                            Modifier.size(Dimensions.SIZE_12.dp())
+                        )
+                    } else {
+                        Icon(
+                            vectorResource(Res.drawable.ic_light_mode),
+                            stringResource(Res.string.toggle_dark_mode),
+                            Modifier.size(Dimensions.SIZE_12.dp())
+                        )
+                    }
+                }
             )
         }
-
     }
-
 }
