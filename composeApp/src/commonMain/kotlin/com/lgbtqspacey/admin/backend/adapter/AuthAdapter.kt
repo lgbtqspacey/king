@@ -8,9 +8,13 @@ import com.lgbtqspacey.admin.commonMain.composeResources.error_logging_out
 import com.lgbtqspacey.admin.commonMain.composeResources.invalid_credentials
 import com.lgbtqspacey.admin.commonMain.composeResources.something_went_wrong
 import com.lgbtqspacey.admin.commonMain.composeResources.user_not_found
+import com.lgbtqspacey.admin.database.api.SessionDaoImpl
+import com.lgbtqspacey.admin.getPlatform
 import com.lgbtqspacey.admin.helpers.Logger
+import com.lgbtqspacey.database.Session
 import io.ktor.http.HttpStatusCode
 import org.jetbrains.compose.resources.getString
+
 
 class AuthAdapter {
     suspend fun login(username: String, password: String): ApiResult {
@@ -23,10 +27,39 @@ class AuthAdapter {
                 HttpStatusCode.OK -> {
                     val sessionToken = response.headers[Backend.Headers.SESSION_TOKEN]
                     val expiresAt = response.headers[Backend.Headers.SESSION_EXPIRES_AT]
+                    val userId = response.headers[Backend.Headers.SESSION_USER_ID]
 
-                    // todo: save token
+                    if (sessionToken.isNullOrEmpty() || expiresAt.isNullOrEmpty() || userId.isNullOrEmpty()) {
+                        return result
+                    } else {
+                        val session = Session(
+                            token = sessionToken,
+                            expiration = expiresAt,
+                            userId = userId,
+                        )
 
-                    result = ApiResult(true)
+                        SessionDaoImpl(getPlatform().databaseDriver).createSession(session)
+
+                        try {
+                            val confirmation = AuthRouter().loginConfirmation(
+                                sessionToken,
+                                userId,
+                                expiresAt,
+                                getPlatform().name,
+                                "0.0.0.0",
+                                "teste"
+                            )
+
+                            if (confirmation?.status == HttpStatusCode.OK) {
+                                result = ApiResult(true)
+                            } else {
+                                return result
+                            }
+                        } catch (e: Exception) {
+                            Logger().error("AuthAdapter :: Login :: Confirmation", e.toString())
+                            return result
+                        }
+                    }
                 }
 
                 HttpStatusCode.NotFound -> {
@@ -56,13 +89,13 @@ class AuthAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            // todo: get session from db
-            val sessionToken = ""
+            val sessionDao = SessionDaoImpl(getPlatform().databaseDriver)
+            val session = sessionDao.getSession()
 
-            val response = AuthRouter().logout(sessionToken)
+            val response = AuthRouter().logout(session.token)
 
             if (response?.status == HttpStatusCode.OK) {
-                // todo: delete session from db
+                sessionDao.deleteSession()
                 result = ApiResult(true)
             } else {
                 result = ApiResult(
@@ -82,13 +115,13 @@ class AuthAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            // todo: get userId from db
-            val userId = ""
+            val sessionDao = SessionDaoImpl(getPlatform().databaseDriver)
+            val session = sessionDao.getSession()
 
-            val response = AuthRouter().logoutAllDevices(userId)
+            val response = AuthRouter().logoutAllDevices(session.userId)
 
             if (response?.status == HttpStatusCode.OK) {
-                // todo: delete session from db
+                sessionDao.deleteSession()
                 result = ApiResult(true)
             } else {
                 result = ApiResult(

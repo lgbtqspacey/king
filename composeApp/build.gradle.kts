@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -27,6 +28,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.sqldelight.android.driver)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -35,16 +37,17 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.androidx.material3.desktop)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.bundles.ktor.common)
-            implementation(libs.room.runtime)
-            implementation(libs.androidx.material3.desktop)
+            implementation(libs.sqldelight.coroutines.extensions)
 //            implementation(libs.navigation.compose)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.sqldelight.sqlite.driver)
         }
     }
 }
@@ -78,8 +81,6 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
-    annotationProcessor(libs.room.compiler)
-    ksp(libs.room.compiler)
 }
 
 compose.desktop {
@@ -98,4 +99,14 @@ compose.resources {
     publicResClass = false
     packageOfResClass = "com.lgbtqspacey.admin.commonMain.composeResources"
     generateResClass = auto
+}
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName.set("com.lgbtqspacey.database")
+            generateAsync.set(true)
+
+        }
+    }
 }

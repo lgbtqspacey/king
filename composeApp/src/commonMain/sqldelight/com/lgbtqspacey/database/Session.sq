@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS Session(
+    token TEXT NOT NULL PRIMARY KEY,
+    expiration TEXT NOT NULL,
+    userId TEXT NOT NULL
+);
+
+insertSession:
+INSERT OR REPLACE INTO Session(token, expiration, userId)
+VALUES (?, ?, ?);
+
+getSession:
+SELECT * FROM Session;
+
+deleteSession:
+DELETE FROM Session;

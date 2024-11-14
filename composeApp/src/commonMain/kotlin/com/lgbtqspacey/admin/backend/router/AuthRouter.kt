@@ -26,6 +26,31 @@ class AuthRouter {
         }
     }
 
+    suspend fun loginConfirmation(
+        sessionToken: String,
+        userId: String,
+        sessionExpiration: String,
+        deviceOs: String,
+        deviceIp: String,
+        deviceLocation: String,
+    ): HttpResponse? {
+        try {
+            return Backend.CLIENT.post(Backend.Routes.Auth.LOGIN) {
+                url.appendPathSegments("confirmation")
+                contentType(ContentType.Application.Json)
+                headers.append(Backend.Headers.SESSION_TOKEN, sessionToken)
+                headers.append(Backend.Headers.SESSION_USER_ID, userId)
+                headers.append(Backend.Headers.SESSION_EXPIRES_AT, sessionExpiration)
+                headers.append(Backend.Headers.SESSION_DEVICE_OS, deviceOs)
+                headers.append(Backend.Headers.SESSION_DEVICE_IP, deviceIp)
+                headers.append(Backend.Headers.SESSION_DEVICE_LOCATION, deviceLocation)
+            }
+        } catch (e: Exception) {
+            Logger().error("AuthRouter :: Login", e.toString())
+            return null
+        }
+    }
+
     /**
      * Deletes current user session from server.
      */
