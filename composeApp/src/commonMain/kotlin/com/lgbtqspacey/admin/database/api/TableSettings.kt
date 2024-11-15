@@ -9,12 +9,11 @@ import io.github.aakira.napier.Napier
 class TableSettings(databaseDriver: DatabaseDriverFactory) {
     private val sharedDatabase = SharedDatabase(databaseDriver)
 
-    suspend fun createSettings(settings: Settings) {
+    suspend fun toggleDarkMode() {
         try {
             sharedDatabase { db ->
-                db.settingsQueries.insertSettings(
-                    isDarkTheme = settings.isDarkTheme,
-                )
+                val isDarkMode = db.settingsQueries.getSettings().awaitAsOne().isDarkMode.toBoolean()
+                db.settingsQueries.updateisDarkTheme((!isDarkMode).toString())
             }
         } catch (exception: Exception) {
             Napier.e("TableSettings :: createSettings", exception)
@@ -22,7 +21,7 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
     }
 
     suspend fun getSettings(): Settings {
-        var settings = Settings( "true")
+        var settings = Settings( "true", "true")
 
         try {
             sharedDatabase { db ->

@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS Session(
-    token TEXT NOT NULL PRIMARY KEY,
-    expiration TEXT NOT NULL,
-    userId TEXT NOT NULL
+    token TEXT NOT NULL PRIMARY KEY DEFAULT "",
+    expiration TEXT NOT NULL DEFAULT "",
+    userId TEXT NOT NULL DEFAULT ""
 );
 
 insertSession:

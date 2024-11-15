@@ -52,224 +52,197 @@ import com.lgbtqspacey.admin.commonMain.composeResources.toggle_light_mode
 import com.lgbtqspacey.admin.commonMain.composeResources.username
 import com.lgbtqspacey.admin.getPlatform
 import com.lgbtqspacey.admin.helpers.Dimensions
+import com.lgbtqspacey.admin.helpers.Screens
 import com.lgbtqspacey.admin.ui.theme.AppTheme
 import kotlinx.coroutines.launch
+import moe.tlaster.precompose.navigation.Navigator
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
-fun Login() {
-    var isDarkMode by remember { mutableStateOf(false) }
-    AppTheme(isDarkMode) {
-        val coroutineScope = rememberCoroutineScope()
+fun Login(navigator: Navigator) {
+    val coroutineScope = rememberCoroutineScope()
 
-        var password by remember { mutableStateOf("") }
-        var username by remember { mutableStateOf("") }
-        var isPasswordVisible by remember { mutableStateOf(false) }
-        var showError by remember { mutableStateOf(false) }
-        var errorMessage by remember { mutableStateOf("") }
-        var errorCode by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
+    var isPasswordVisible by remember { mutableStateOf(false) }
+    var showError by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+    var errorCode by remember { mutableStateOf("") }
 
-        val passwordVisualTransformation: VisualTransformation?
-        val passwordToggleImage: ImageVector?
-        val passwordToggleDescription: String?
+    val passwordVisualTransformation: VisualTransformation?
+    val passwordToggleImage: ImageVector?
+    val passwordToggleDescription: String?
 
-        /**
-         * Call login method from backend
-         * @see AuthAdapter
-         */
-        val tryLogin: () -> Unit = {
-            if (password.isEmpty() || username.isEmpty()) {
-                coroutineScope.launch {
-                    errorMessage = getString(Res.string.fill_all_fields)
+    /**
+     * Call login method from backend
+     * @see AuthAdapter
+     */
+    val tryLogin: () -> Unit = {
+        if (password.isEmpty() || username.isEmpty()) {
+            coroutineScope.launch {
+                errorMessage = getString(Res.string.fill_all_fields)
+                showError = true
+            }
+        } else {
+            coroutineScope.launch {
+                val result = AuthAdapter().login(username, password)
+
+                if (result.isSuccess) {
+                    navigator.navigate(Screens.DASHBOARD)
+                    println("sucesso")
+                } else {
+                    errorMessage = result.errorMessage
+                    errorCode = "Código do erro: ${result.errorCode}"
                     showError = true
                 }
-            } else {
-                coroutineScope.launch {
-                    val result = AuthAdapter().login(username, password)
-
-                    if (result.isSuccess) {
-                        // todo: navigate
-                        println("sucesso")
-                    } else {
-                        errorMessage = result.errorMessage
-                        errorCode = "Código do erro: ${result.errorCode}"
-                        showError = true
-                    }
-                }
             }
         }
+    }
 
-        /**
-         * Toggle password visibility
-         */
-        if (isPasswordVisible) {
-            passwordVisualTransformation = VisualTransformation.None
-            passwordToggleImage = vectorResource(Res.drawable.ic_visibility_off)
-            passwordToggleDescription = stringResource(Res.string.hide_password)
-        } else {
-            passwordVisualTransformation = PasswordVisualTransformation()
-            passwordToggleImage = vectorResource(Res.drawable.ic_visibility)
-            passwordToggleDescription = stringResource(Res.string.show_password)
-        }
+    /**
+     * Toggle password visibility
+     */
+    if (isPasswordVisible) {
+        passwordVisualTransformation = VisualTransformation.None
+        passwordToggleImage = vectorResource(Res.drawable.ic_visibility_off)
+        passwordToggleDescription = stringResource(Res.string.hide_password)
+    } else {
+        passwordVisualTransformation = PasswordVisualTransformation()
+        passwordToggleImage = vectorResource(Res.drawable.ic_visibility)
+        passwordToggleDescription = stringResource(Res.string.show_password)
+    }
 
-        /**
-         * Screen container
-         */
-        Box(
-            contentAlignment = Alignment.Center,
+    /**
+     * Screen container
+     */
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+    ) {
+        Column(
             modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
+                .padding(top = Dimensions.SIZE_80.dp())
+                .align(Alignment.TopCenter)
+                .align(Alignment.BottomCenter)
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(top = Dimensions.SIZE_80.dp())
-                    .align(Alignment.TopCenter)
-                    .align(Alignment.BottomCenter)
-            ) {
-                /**
-                 * Login form
-                 */
-                Text(
-                    text = stringResource(Res.string.log_into_account),
-                    fontSize = Dimensions.SIZE_32.sp(),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                )
-
-                OutlinedTextField(
-                    value = username,
-                    onValueChange = {
-                        username = it
-                        showError = false
-                    },
-                    singleLine = true,
-                    label = { Text(stringResource(Res.string.username)) },
-                    modifier = Modifier.padding(top = Dimensions.SIZE_16.dp()),
-                    colors = TextFieldDefaults.colors(MaterialTheme.colorScheme.primary)
-                )
-
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = {
-                        password = it
-                        showError = false
-                    },
-                    singleLine = true,
-                    label = { Text(stringResource(Res.string.password)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    visualTransformation = passwordVisualTransformation,
-                    colors = TextFieldDefaults.colors(MaterialTheme.colorScheme.primary),
-                    trailingIcon = {
-                        IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                            Icon(passwordToggleImage, passwordToggleDescription)
-                        }
-                    },
-                )
-
-                /**
-                 * Container to display errors
-                 */
-                AnimatedVisibility(
-                    visible = showError,
-                    enter = fadeIn(initialAlpha = 0.4f),
-                    exit = fadeOut(animationSpec = tween(durationMillis = 200)),
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(top = Dimensions.SIZE_8.dp())
-                ) {
-                    Column {
-                        Text(
-                            text = errorMessage,
-                            fontSize = Dimensions.SIZE_12.sp(),
-                            color = MaterialTheme.colorScheme.error,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally),
-                        )
-                        Text(
-                            text = errorCode,
-                            fontSize = Dimensions.SIZE_12.sp(),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onErrorContainer,
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally),
-                        )
-                    }
-                }
-
-                /**
-                 * Login button
-                 */
-                Button(
-                    onClick = {
-                        tryLogin()
-                    },
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(top = Dimensions.SIZE_16.dp())
-                ) {
-                    Text(stringResource(Res.string.`continue`))
-                }
-
-                /**
-                 * Foot notes
-                 */
-                Text(
-                    text = stringResource(Res.string.problems_to_log_in),
-                    fontSize = Dimensions.SIZE_16.sp(),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier
-                        .padding(top = Dimensions.SIZE_16.dp())
-                        .align(Alignment.CenterHorizontally)
-                )
-                Text(
-                    text = stringResource(Res.string.open_a_ticket),
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.Companion
-                        .align(Alignment.CenterHorizontally)
-                )
-
-            }
-
             /**
-             * App version
+             * Login form
              */
             Text(
-                text = "v${getPlatform().version}",
-                fontSize = Dimensions.SIZE_12.sp(),
+                text = stringResource(Res.string.log_into_account),
+                fontSize = Dimensions.SIZE_32.sp(),
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.align(Alignment.BottomCenter)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+            )
+
+            OutlinedTextField(
+                value = username,
+                onValueChange = {
+                    username = it
+                    showError = false
+                },
+                singleLine = true,
+                label = { Text(stringResource(Res.string.username)) },
+                modifier = Modifier.padding(top = Dimensions.SIZE_16.dp()),
+                colors = TextFieldDefaults.colors(MaterialTheme.colorScheme.primary)
+            )
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = {
+                    password = it
+                    showError = false
+                },
+                singleLine = true,
+                label = { Text(stringResource(Res.string.password)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                visualTransformation = passwordVisualTransformation,
+                colors = TextFieldDefaults.colors(MaterialTheme.colorScheme.primary),
+                trailingIcon = {
+                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                        Icon(passwordToggleImage, passwordToggleDescription)
+                    }
+                },
             )
 
             /**
-             * Toggle theme
+             * Container to display errors
              */
-            Switch(
-                checked = isDarkMode,
-                onCheckedChange = { isDarkMode = !isDarkMode },
+            AnimatedVisibility(
+                visible = showError,
+                enter = fadeIn(initialAlpha = 0.4f),
+                exit = fadeOut(animationSpec = tween(durationMillis = 200)),
                 modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(Dimensions.SIZE_4.dp()),
-                thumbContent = {
-                    if (isDarkMode) {
-                        Icon(
-                            vectorResource(Res.drawable.ic_dark_mode),
-                            stringResource(Res.string.toggle_light_mode),
-                            Modifier.size(Dimensions.SIZE_12.dp())
-                        )
-                    } else {
-                        Icon(
-                            vectorResource(Res.drawable.ic_light_mode),
-                            stringResource(Res.string.toggle_dark_mode),
-                            Modifier.size(Dimensions.SIZE_12.dp())
-                        )
-                    }
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = Dimensions.SIZE_8.dp())
+            ) {
+                Column {
+                    Text(
+                        text = errorMessage,
+                        fontSize = Dimensions.SIZE_12.sp(),
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally),
+                    )
+                    Text(
+                        text = errorCode,
+                        fontSize = Dimensions.SIZE_12.sp(),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally),
+                    )
                 }
+            }
+
+            /**
+             * Login button
+             */
+            Button(
+                onClick = {
+                    tryLogin()
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = Dimensions.SIZE_16.dp())
+            ) {
+                Text(stringResource(Res.string.`continue`))
+            }
+
+            /**
+             * Foot notes
+             */
+            Text(
+                text = stringResource(Res.string.problems_to_log_in),
+                fontSize = Dimensions.SIZE_16.sp(),
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .padding(top = Dimensions.SIZE_16.dp())
+                    .align(Alignment.CenterHorizontally)
             )
+            Text(
+                text = stringResource(Res.string.open_a_ticket),
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.Companion
+                    .align(Alignment.CenterHorizontally)
+            )
+
         }
+
+        /**
+         * App version
+         */
+        Text(
+            text = "v${getPlatform().version}",
+            fontSize = Dimensions.SIZE_12.sp(),
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }

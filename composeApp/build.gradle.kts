@@ -19,12 +19,12 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     jvm("desktop")
-    
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -38,12 +38,11 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.material3.desktop)
-            implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.bundles.ktor.common)
             implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.napier)
-//            implementation(libs.navigation.compose)
+            implementation(libs.precompose)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
