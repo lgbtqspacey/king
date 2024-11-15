@@ -1,10 +1,14 @@
 CREATE TABLE IF NOT EXISTS Settings (
     isDarkMode TEXT NOT NULL DEFAULT "true",
-    autoUpdate TEXT NOT NULL DEFAULT "true"
+    isAutoUpdate TEXT NOT NULL DEFAULT "true"
 );
 
-updateisDarkTheme:
+updateIsDarkTheme:
 INSERT OR REPLACE INTO Settings(isDarkMode)
+VALUES (?);
+
+updateIsAutoUpdate:
+INSERT OR REPLACE INTO Settings(isAutoUpdate)
 VALUES (?);
 
 getSettings:

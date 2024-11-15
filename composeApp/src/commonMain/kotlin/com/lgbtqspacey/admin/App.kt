@@ -15,6 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.lgbtqspacey.admin.database.api.TableSession
 import com.lgbtqspacey.admin.database.api.TableSettings
+import com.lgbtqspacey.admin.features.auth.Login
+import com.lgbtqspacey.admin.features.dashboard.DashBoard
+import com.lgbtqspacey.admin.features.dashboard.Settings
 import com.lgbtqspacey.admin.helpers.Screens
 import com.lgbtqspacey.admin.ui.theme.AppTheme
 import kotlinx.coroutines.launch
@@ -65,6 +68,18 @@ fun App() {
                             navigator.navigate(Screens.LOGIN)
                         }
                     }
+                }
+
+                scene(Screens.LOGIN) {
+                    Login(navigator)
+                }
+
+                scene(Screens.DASHBOARD) {
+                    DashBoard(navigator)
+                }
+
+                scene(Screens.SETTINGS) {
+                    Settings(navigator)
                 }
             }
         }

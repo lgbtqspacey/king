@@ -13,10 +13,21 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
         try {
             sharedDatabase { db ->
                 val isDarkMode = db.settingsQueries.getSettings().awaitAsOne().isDarkMode.toBoolean()
-                db.settingsQueries.updateisDarkTheme((!isDarkMode).toString())
+                db.settingsQueries.updateIsDarkTheme((!isDarkMode).toString())
             }
         } catch (exception: Exception) {
-            Napier.e("TableSettings :: createSettings", exception)
+            Napier.e("TableSettings :: toggleDarkMode", exception)
+        }
+    }
+
+    suspend fun toggleAutoUpdate() {
+        try {
+            sharedDatabase { db ->
+                val isAutoUpdate = db.settingsQueries.getSettings().awaitAsOne().isAutoUpdate.toBoolean()
+                db.settingsQueries.updateIsAutoUpdate((!isAutoUpdate).toString())
+            }
+        } catch (exception: Exception) {
+            Napier.e("TableSettings :: toggleAutoUpdate", exception)
         }
     }
 

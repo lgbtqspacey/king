@@ -91,7 +91,6 @@ fun Login(navigator: Navigator) {
 
                 if (result.isSuccess) {
                     navigator.navigate(Screens.DASHBOARD)
-                    println("sucesso")
                 } else {
                     errorMessage = result.errorMessage
                     errorCode = "Código do erro: ${result.errorCode}"
