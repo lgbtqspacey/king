@@ -1,7 +1,7 @@
 package com.lgbtqspacey.admin.backend.router
 
 import com.lgbtqspacey.admin.backend.model.Login
-import com.lgbtqspacey.admin.helpers.Logger
+import io.github.aakira.napier.Napier
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
@@ -20,8 +20,8 @@ class AuthRouter {
                 contentType(ContentType.Application.Json)
                 setBody(Login(username, password))
             }
-        } catch (e: Exception) {
-            Logger().error("AuthRouter :: Login", e.toString())
+        } catch (exception: Exception) {
+            Napier.e("AuthRouter :: Login", exception)
             return null
         }
     }
@@ -45,8 +45,8 @@ class AuthRouter {
                 headers.append(Backend.Headers.SESSION_DEVICE_IP, deviceIp)
                 headers.append(Backend.Headers.SESSION_DEVICE_LOCATION, deviceLocation)
             }
-        } catch (e: Exception) {
-            Logger().error("AuthRouter :: Login", e.toString())
+        } catch (exception: Exception) {
+            Napier.e("AuthRouter :: Login", exception)
             return null
         }
     }
@@ -60,8 +60,8 @@ class AuthRouter {
                 contentType(ContentType.Application.Json)
                 headers.append(Backend.Headers.SESSION_TOKEN, sessionToken)
             }
-        } catch (e: Exception) {
-            Logger().error("AuthRouter :: Logout", e.toString())
+        } catch (exception: Exception) {
+            Napier.e("AuthRouter :: Logout", exception)
             return null
         }
     }
@@ -75,8 +75,8 @@ class AuthRouter {
                 url.appendPathSegments(userId)
                 contentType(ContentType.Application.Json)
             }
-        } catch (e: Exception) {
-            Logger().error("AuthRouter :: LogoutAllDevices", e.toString())
+        } catch (exception: Exception) {
+            Napier.e("AuthRouter :: LogoutAllDevices", exception)
             return null
         }
     }

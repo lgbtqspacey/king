@@ -8,13 +8,12 @@ import com.lgbtqspacey.admin.commonMain.composeResources.error_logging_out
 import com.lgbtqspacey.admin.commonMain.composeResources.invalid_credentials
 import com.lgbtqspacey.admin.commonMain.composeResources.something_went_wrong
 import com.lgbtqspacey.admin.commonMain.composeResources.user_not_found
-import com.lgbtqspacey.admin.database.api.SessionDaoImpl
+import com.lgbtqspacey.admin.database.api.TableSession
 import com.lgbtqspacey.admin.getPlatform
-import com.lgbtqspacey.admin.helpers.Logger
 import com.lgbtqspacey.database.Session
+import io.github.aakira.napier.Napier
 import io.ktor.http.HttpStatusCode
 import org.jetbrains.compose.resources.getString
-
 
 class AuthAdapter {
     suspend fun login(username: String, password: String): ApiResult {
@@ -38,7 +37,7 @@ class AuthAdapter {
                             userId = userId,
                         )
 
-                        SessionDaoImpl(getPlatform().databaseDriver).createSession(session)
+                        TableSession(getPlatform().databaseDriver).createSession(session)
 
                         try {
                             val confirmation = AuthRouter().loginConfirmation(
@@ -55,8 +54,8 @@ class AuthAdapter {
                             } else {
                                 return result
                             }
-                        } catch (e: Exception) {
-                            Logger().error("AuthAdapter :: Login :: Confirmation", e.toString())
+                        } catch (exception: Exception) {
+                            Napier.e("AuthAdapter :: Login :: Confirmation", exception)
                             return result
                         }
                     }
@@ -79,8 +78,8 @@ class AuthAdapter {
                 }
             }
             return result
-        } catch (e: Exception) {
-            Logger().error("AuthAdapter :: Login", e.toString())
+        } catch (exception: Exception) {
+            Napier.e("AuthAdapter :: Login", exception)
             return result
         }
     }
@@ -89,7 +88,7 @@ class AuthAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val sessionDao = SessionDaoImpl(getPlatform().databaseDriver)
+            val sessionDao = TableSession(getPlatform().databaseDriver)
             val session = sessionDao.getSession()
 
             val response = AuthRouter().logout(session.token)
@@ -105,8 +104,8 @@ class AuthAdapter {
                 )
             }
             return result
-        } catch (e: Exception) {
-            Logger().error("AuthAdapter :: Logout", e.toString())
+        } catch (exception: Exception) {
+            Napier.e("AuthAdapter :: Logout", exception)
             return result
         }
     }
@@ -115,7 +114,7 @@ class AuthAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val sessionDao = SessionDaoImpl(getPlatform().databaseDriver)
+            val sessionDao = TableSession(getPlatform().databaseDriver)
             val session = sessionDao.getSession()
 
             val response = AuthRouter().logoutAllDevices(session.userId)
@@ -131,8 +130,8 @@ class AuthAdapter {
                 )
             }
             return result
-        } catch (e: Exception) {
-            Logger().error("AuthAdapter :: LogoutAllDevices", e.toString())
+        } catch (exception: Exception) {
+            Napier.e("AuthAdapter :: LogoutAllDevices", exception)
             return result
         }
     }

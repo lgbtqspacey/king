@@ -1,11 +1,10 @@
 CREATE TABLE IF NOT EXISTS Settings (
-    id Integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-    isDarkTheme TEXT
+    isDarkTheme TEXT DEFAULT "true"
 );
 
 insertSettings:
-INSERT OR REPLACE INTO Settings(id, isDarkTheme)
-VALUES (?, ?);
+INSERT OR REPLACE INTO Settings(isDarkTheme)
+VALUES (?);
 
 getSettings:
 SELECT * FROM Settings;

@@ -42,6 +42,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.bundles.ktor.common)
             implementation(libs.sqldelight.coroutines.extensions)
+            implementation(libs.napier)
 //            implementation(libs.navigation.compose)
         }
         desktopMain.dependencies {
