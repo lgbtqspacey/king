@@ -1,6 +1,7 @@
 package com.lgbtqspacey.admin.backend.adapter
 
 import com.lgbtqspacey.admin.backend.model.ApiResult
+import com.lgbtqspacey.admin.backend.model.Confirmation
 import com.lgbtqspacey.admin.backend.router.AuthRouter
 import com.lgbtqspacey.admin.backend.router.Backend
 import com.lgbtqspacey.admin.commonMain.composeResources.Res
@@ -18,7 +19,6 @@ import org.jetbrains.compose.resources.getString
 class AuthAdapter {
     suspend fun login(username: String, password: String): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
-
         try {
             val response = AuthRouter().login(username, password)
 
@@ -31,31 +31,21 @@ class AuthAdapter {
                     if (sessionToken.isNullOrEmpty() || expiresAt.isNullOrEmpty() || userId.isNullOrEmpty()) {
                         return result
                     } else {
-                        val session = Session(
-                            token = sessionToken,
-                            expiration = expiresAt,
-                            userId = userId,
-                        )
+                        val session = Session(sessionToken, expiresAt, userId)
+                        val writeToDatabase = TableSession(getPlatform().databaseDriver).createSession(session)
 
-                        TableSession(getPlatform().databaseDriver).createSession(session)
-
-                        try {
-                            val confirmation = AuthRouter().loginConfirmation(
-                                sessionToken,
-                                userId,
-                                expiresAt,
-                                getPlatform().name,
-                                "0.0.0.0",
-                                "teste"
+                        if (writeToDatabase) {
+                            result = sendConfirmation(
+                                Confirmation(
+                                    sessionToken,
+                                    expiresAt,
+                                    userId,
+                                    getPlatform().name,
+                                    "local",
+                                    "local"
+                                )
                             )
-
-                            if (confirmation?.status == HttpStatusCode.OK) {
-                                result = ApiResult(true)
-                            } else {
-                                return result
-                            }
-                        } catch (exception: Exception) {
-                            Napier.e("AuthAdapter :: Login :: Confirmation", exception)
+                        } else {
                             return result
                         }
                     }
@@ -134,5 +124,21 @@ class AuthAdapter {
             Napier.e("AuthAdapter :: LogoutAllDevices", exception)
             return result
         }
+    }
+
+    private suspend fun sendConfirmation(confirmation: Confirmation): ApiResult {
+        var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
+        try {
+            val confirmationResult = AuthRouter().loginConfirmation(confirmation)
+
+            if (confirmationResult?.status == HttpStatusCode.OK) {
+                result = ApiResult(true)
+            } else {
+                return result
+            }
+        } catch (exception: Exception) {
+            Napier.e("AuthAdapter :: Login :: Confirmation", exception)
+        }
+        return result
     }
 }

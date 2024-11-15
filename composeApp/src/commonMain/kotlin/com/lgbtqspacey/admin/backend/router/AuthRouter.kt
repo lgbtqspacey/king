@@ -1,5 +1,6 @@
 package com.lgbtqspacey.admin.backend.router
 
+import com.lgbtqspacey.admin.backend.model.Confirmation
 import com.lgbtqspacey.admin.backend.model.Login
 import io.github.aakira.napier.Napier
 import io.ktor.client.request.post
@@ -26,24 +27,17 @@ class AuthRouter {
         }
     }
 
-    suspend fun loginConfirmation(
-        sessionToken: String,
-        userId: String,
-        sessionExpiration: String,
-        deviceOs: String,
-        deviceIp: String,
-        deviceLocation: String,
-    ): HttpResponse? {
+    suspend fun loginConfirmation(confirmation: Confirmation): HttpResponse? {
         try {
             return Backend.CLIENT.post(Backend.Routes.Auth.LOGIN) {
                 url.appendPathSegments("confirmation")
                 contentType(ContentType.Application.Json)
-                headers.append(Backend.Headers.SESSION_TOKEN, sessionToken)
-                headers.append(Backend.Headers.SESSION_USER_ID, userId)
-                headers.append(Backend.Headers.SESSION_EXPIRES_AT, sessionExpiration)
-                headers.append(Backend.Headers.SESSION_DEVICE_OS, deviceOs)
-                headers.append(Backend.Headers.SESSION_DEVICE_IP, deviceIp)
-                headers.append(Backend.Headers.SESSION_DEVICE_LOCATION, deviceLocation)
+                headers.append(Backend.Headers.SESSION_TOKEN, confirmation.token)
+                headers.append(Backend.Headers.SESSION_USER_ID, confirmation.userId)
+                headers.append(Backend.Headers.SESSION_EXPIRES_AT, confirmation.expiration)
+                headers.append(Backend.Headers.SESSION_DEVICE_OS, confirmation.deviceOs)
+                headers.append(Backend.Headers.SESSION_DEVICE_IP, confirmation.deviceIp)
+                headers.append(Backend.Headers.SESSION_DEVICE_LOCATION, confirmation.deviceLocation)
             }
         } catch (exception: Exception) {
             Napier.e("AuthRouter :: Login", exception)

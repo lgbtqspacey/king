@@ -1,6 +1,7 @@
 package com.lgbtqspacey.admin.database.api
 
 import app.cash.sqldelight.async.coroutines.awaitAsOne
+import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import com.lgbtqspacey.admin.database.DatabaseDriverFactory
 import com.lgbtqspacey.admin.database.SharedDatabase
 import com.lgbtqspacey.database.Settings
@@ -9,49 +10,55 @@ import io.github.aakira.napier.Napier
 class TableSettings(databaseDriver: DatabaseDriverFactory) {
     private val sharedDatabase = SharedDatabase(databaseDriver)
 
-    suspend fun toggleDarkMode() {
+    suspend fun toggleDarkMode(): Boolean {
         try {
             sharedDatabase { db ->
                 val isDarkMode = db.settingsQueries.getSettings().awaitAsOne().isDarkMode.toBoolean()
                 db.settingsQueries.updateIsDarkTheme((!isDarkMode).toString())
             }
+            return true
         } catch (exception: Exception) {
             Napier.e("TableSettings :: toggleDarkMode", exception)
+            return false
         }
     }
 
-    suspend fun toggleAutoUpdate() {
+    suspend fun toggleAutoUpdate(): Boolean {
         try {
             sharedDatabase { db ->
                 val isAutoUpdate = db.settingsQueries.getSettings().awaitAsOne().isAutoUpdate.toBoolean()
                 db.settingsQueries.updateIsAutoUpdate((!isAutoUpdate).toString())
             }
+            return true
         } catch (exception: Exception) {
             Napier.e("TableSettings :: toggleAutoUpdate", exception)
+            return false
         }
     }
 
     suspend fun getSettings(): Settings {
-        var settings = Settings( "true", "true")
+        var settings: Settings? = null
 
         try {
             sharedDatabase { db ->
-                settings = db.settingsQueries.getSettings().awaitAsOne()
+                settings = db.settingsQueries.getSettings().awaitAsOneOrNull()
             }
         } catch (exception: Exception) {
             Napier.e("TableSettings :: getSettings", exception)
         }
 
-        return settings
+        return settings ?: Settings( "true", "true")
     }
 
-    suspend fun deleteSettings() {
+    suspend fun deleteSettings(): Boolean {
         try {
             sharedDatabase { db ->
                 db.settingsQueries.deleteSettings()
             }
+            return true
         } catch (exception: Exception) {
             Napier.e("TableSettings :: deleteSettings", exception)
+            return false
         }
     }
 }
