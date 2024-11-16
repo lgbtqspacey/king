@@ -20,7 +20,7 @@ class AuthAdapter {
     suspend fun login(username: String, password: String): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
         try {
-            val response = AuthRouter().login(username, password)
+            val response = AuthRouter.login(username, password)
 
             when (response?.status) {
                 HttpStatusCode.OK -> {
@@ -72,7 +72,7 @@ class AuthAdapter {
             val sessionDao = TableSession(getPlatform().databaseDriver)
             val session = sessionDao.getSession()
 
-            val response = AuthRouter().logout(session.token)
+            val response = AuthRouter.logout(session.token)
 
             if (response?.status == HttpStatusCode.OK) {
                 sessionDao.deleteSession()
@@ -98,7 +98,7 @@ class AuthAdapter {
             val sessionDao = TableSession(getPlatform().databaseDriver)
             val session = sessionDao.getSession()
 
-            val response = AuthRouter().logoutAllDevices(session.userId)
+            val response = AuthRouter.logoutAllDevices(session.userId)
 
             if (response?.status == HttpStatusCode.OK) {
                 sessionDao.deleteSession()
@@ -120,7 +120,7 @@ class AuthAdapter {
     private suspend fun sendConfirmation(confirmation: Confirmation): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
         try {
-            val confirmationResult = AuthRouter().loginConfirmation(confirmation)
+            val confirmationResult = AuthRouter.loginConfirmation(confirmation)
 
             if (confirmationResult?.status == HttpStatusCode.OK) {
                 result = ApiResult(true)

@@ -11,65 +11,70 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 
 class AuthRouter {
-    /**
-     * Creates an user session on the server.
-     * @return `session-token` and `session-expires-at` on headers
-     */
-    suspend fun login(username: String, password: String): HttpResponse? {
-        try {
-            return Backend.CLIENT.post(Backend.Routes.Auth.LOGIN) {
-                contentType(ContentType.Application.Json)
-                setBody(Login(username, password))
+    companion object {
+        /**
+         * Creates an user session on the server.
+         * @return session info on headers
+         */
+        suspend fun login(username: String, password: String): HttpResponse? {
+            try {
+                return Backend.CLIENT.post(Backend.Routes.Auth.LOGIN) {
+                    contentType(ContentType.Application.Json)
+                    setBody(Login(username, password))
+                }
+            } catch (exception: Exception) {
+                Napier.e("AuthRouter :: Login", exception)
+                return null
             }
-        } catch (exception: Exception) {
-            Napier.e("AuthRouter :: Login", exception)
-            return null
         }
-    }
 
-    suspend fun loginConfirmation(confirmation: Confirmation): HttpResponse? {
-        try {
-            return Backend.CLIENT.post(Backend.Routes.Auth.LOGIN) {
-                url.appendPathSegments("confirmation")
-                contentType(ContentType.Application.Json)
-                headers.append(Backend.Headers.SESSION_TOKEN, confirmation.sessionToken)
-                headers.append(Backend.Headers.SESSION_USER_ID, confirmation.sessionUserId)
-                headers.append(Backend.Headers.SESSION_EXPIRATION, confirmation.sessionExpiration)
-                headers.append(Backend.Headers.SESSION_DEVICE_OS, confirmation.sessionDeviceOS)
+        /**
+         * Sends login confirmation to the server with the session info.
+         */
+        suspend fun loginConfirmation(confirmation: Confirmation): HttpResponse? {
+            try {
+                return Backend.CLIENT.post(Backend.Routes.Auth.LOGIN) {
+                    url.appendPathSegments("confirmation")
+                    contentType(ContentType.Application.Json)
+                    headers.append(Backend.Headers.SESSION_TOKEN, confirmation.sessionToken)
+                    headers.append(Backend.Headers.SESSION_USER_ID, confirmation.sessionUserId)
+                    headers.append(Backend.Headers.SESSION_EXPIRATION, confirmation.sessionExpiration)
+                    headers.append(Backend.Headers.SESSION_DEVICE_OS, confirmation.sessionDeviceOS)
+                }
+            } catch (exception: Exception) {
+                Napier.e("AuthRouter :: Login", exception)
+                return null
             }
-        } catch (exception: Exception) {
-            Napier.e("AuthRouter :: Login", exception)
-            return null
         }
-    }
 
-    /**
-     * Deletes current user session from server.
-     */
-    suspend fun logout(sessionToken: String): HttpResponse? {
-        try {
-            return Backend.CLIENT.post(Backend.Routes.Auth.LOGOUT) {
-                contentType(ContentType.Application.Json)
-                headers.append(Backend.Headers.SESSION_TOKEN, sessionToken)
+        /**
+         * Deletes current user session from server.
+         */
+        suspend fun logout(sessionToken: String): HttpResponse? {
+            try {
+                return Backend.CLIENT.post(Backend.Routes.Auth.LOGOUT) {
+                    contentType(ContentType.Application.Json)
+                    headers.append(Backend.Headers.SESSION_TOKEN, sessionToken)
+                }
+            } catch (exception: Exception) {
+                Napier.e("AuthRouter :: Logout", exception)
+                return null
             }
-        } catch (exception: Exception) {
-            Napier.e("AuthRouter :: Logout", exception)
-            return null
         }
-    }
 
-    /**
-     * Deletes all user sessions from server.
-     */
-    suspend fun logoutAllDevices(userId: String): HttpResponse? {
-        try {
-            return Backend.CLIENT.post(Backend.Routes.Auth.LOGOUT) {
-                url.appendPathSegments(userId)
-                contentType(ContentType.Application.Json)
+        /**
+         * Deletes all user sessions from server.
+         */
+        suspend fun logoutAllDevices(userId: String): HttpResponse? {
+            try {
+                return Backend.CLIENT.post(Backend.Routes.Auth.LOGOUT) {
+                    url.appendPathSegments(userId)
+                    contentType(ContentType.Application.Json)
+                }
+            } catch (exception: Exception) {
+                Napier.e("AuthRouter :: LogoutAllDevices", exception)
+                return null
             }
-        } catch (exception: Exception) {
-            Napier.e("AuthRouter :: LogoutAllDevices", exception)
-            return null
         }
     }
 }
