@@ -59,11 +59,9 @@ class Backend {
     }
 
     object Headers {
-        const val SESSION_TOKEN = "session-token"
-        const val SESSION_EXPIRES_AT = "session-expires-at"
-        const val SESSION_USER_ID = "session-user-id"
-        const val SESSION_DEVICE_OS = "session-device-os"
-        const val SESSION_DEVICE_IP = "session-device-ip"
-        const val SESSION_DEVICE_LOCATION = "session-device-location"
+        const val SESSION_TOKEN = "sessionToken"
+        const val SESSION_EXPIRATION = "sessionExpiration"
+        const val SESSION_USER_ID = "sessionUserId"
+        const val SESSION_DEVICE_OS = "sessionDeviceOS"
     }
 }

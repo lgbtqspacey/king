@@ -24,27 +24,18 @@ class AuthAdapter {
 
             when (response?.status) {
                 HttpStatusCode.OK -> {
-                    val sessionToken = response.headers[Backend.Headers.SESSION_TOKEN]
-                    val expiresAt = response.headers[Backend.Headers.SESSION_EXPIRES_AT]
+                    val token = response.headers[Backend.Headers.SESSION_TOKEN]
+                    val expiration = response.headers[Backend.Headers.SESSION_EXPIRATION]
                     val userId = response.headers[Backend.Headers.SESSION_USER_ID]
 
-                    if (sessionToken.isNullOrEmpty() || expiresAt.isNullOrEmpty() || userId.isNullOrEmpty()) {
+                    if (token.isNullOrEmpty() || expiration.isNullOrEmpty() || userId.isNullOrEmpty()) {
                         return result
                     } else {
-                        val session = Session(sessionToken, expiresAt, userId)
+                        val session = Session(token, expiration, userId)
                         val writeToDatabase = TableSession(getPlatform().databaseDriver).createSession(session)
 
                         if (writeToDatabase) {
-                            result = sendConfirmation(
-                                Confirmation(
-                                    sessionToken,
-                                    expiresAt,
-                                    userId,
-                                    getPlatform().name,
-                                    "local",
-                                    "local"
-                                )
-                            )
+                            result = sendConfirmation(Confirmation(token, expiration, userId, getPlatform().name))
                         } else {
                             return result
                         }

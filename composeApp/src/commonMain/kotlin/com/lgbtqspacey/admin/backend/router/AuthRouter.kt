@@ -32,12 +32,10 @@ class AuthRouter {
             return Backend.CLIENT.post(Backend.Routes.Auth.LOGIN) {
                 url.appendPathSegments("confirmation")
                 contentType(ContentType.Application.Json)
-                headers.append(Backend.Headers.SESSION_TOKEN, confirmation.token)
-                headers.append(Backend.Headers.SESSION_USER_ID, confirmation.userId)
-                headers.append(Backend.Headers.SESSION_EXPIRES_AT, confirmation.expiration)
-                headers.append(Backend.Headers.SESSION_DEVICE_OS, confirmation.deviceOs)
-                headers.append(Backend.Headers.SESSION_DEVICE_IP, confirmation.deviceIp)
-                headers.append(Backend.Headers.SESSION_DEVICE_LOCATION, confirmation.deviceLocation)
+                headers.append(Backend.Headers.SESSION_TOKEN, confirmation.sessionToken)
+                headers.append(Backend.Headers.SESSION_USER_ID, confirmation.sessionUserId)
+                headers.append(Backend.Headers.SESSION_EXPIRATION, confirmation.sessionExpiration)
+                headers.append(Backend.Headers.SESSION_DEVICE_OS, confirmation.sessionDeviceOS)
             }
         } catch (exception: Exception) {
             Napier.e("AuthRouter :: Login", exception)

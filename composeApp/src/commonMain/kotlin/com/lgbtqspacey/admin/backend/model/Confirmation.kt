@@ -1,10 +1,8 @@
 package com.lgbtqspacey.admin.backend.model
 
 data class Confirmation(
-    val token: String,
-    val expiration: String,
-    val userId: String,
-    val deviceOs: String,
-    val deviceIp: String,
-    val deviceLocation: String,
+    val sessionToken: String,
+    val sessionExpiration: String,
+    val sessionUserId: String,
+    val sessionDeviceOS: String
 )
