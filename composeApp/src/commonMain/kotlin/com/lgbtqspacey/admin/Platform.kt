@@ -10,7 +10,7 @@ abstract class  Platform {
 
     fun initSentry(platform: String, version: String) {
         Sentry.init { options ->
-            options.dsn = "sentry_dns"
+            options.dsn = Secrets.SENTRY_DNS
             options.release = "${platform}_v${version}"
             options.tracesSampleRate = 1.0
             options.debug = true

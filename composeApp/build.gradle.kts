@@ -115,7 +115,7 @@ sqldelight {
 }
 
 sentry {
-    val env = project.rootProject.file("env.properties")
+    val env = project.rootProject.file("sentry.properties")
     val properties = Properties()
     properties.load(env.inputStream())
 

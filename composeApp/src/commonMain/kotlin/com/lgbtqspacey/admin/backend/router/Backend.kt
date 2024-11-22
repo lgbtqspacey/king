@@ -1,5 +1,6 @@
 package com.lgbtqspacey.admin.backend.router
 
+import com.lgbtqspacey.admin.Secrets
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -13,7 +14,7 @@ import kotlinx.serialization.json.Json
 
 class Backend {
     companion object {
-        const val HOST = "http://localhost:3000"
+        const val HOST = Secrets.HOSTNAME
 
         /**
          * Setup Ktor client using OkHttp engine
