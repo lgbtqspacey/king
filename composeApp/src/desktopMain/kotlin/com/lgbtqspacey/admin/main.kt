@@ -10,6 +10,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "Admin Portal - LGBTQ+Spacey",
     ) {
+        getPlatform().initSentry(getPlatform().name, getPlatform().version)
         Napier.base(DebugAntilog())
         App()
     }

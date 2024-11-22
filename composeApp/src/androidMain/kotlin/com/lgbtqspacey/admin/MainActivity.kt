@@ -9,6 +9,7 @@ import io.github.aakira.napier.Napier
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        getPlatform().initSentry(getPlatform().name, getPlatform().version)
         Napier.base(DebugAntilog())
 
         setContent {

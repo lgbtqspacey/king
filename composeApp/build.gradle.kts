@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -10,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.sentry.plugin)
 }
 
 kotlin {
@@ -43,6 +45,7 @@ kotlin {
             implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.napier)
             implementation(libs.precompose)
+            implementation(libs.sentry.sdk)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -109,4 +112,15 @@ sqldelight {
 
         }
     }
+}
+
+sentry {
+    val env = project.rootProject.file("env.properties")
+    val properties = Properties()
+    properties.load(env.inputStream())
+
+    includeSourceContext = true
+    org = "lgbtqspacey"
+    projectName = "admin-portal-client"
+    authToken = properties.getProperty("sentry_auth_token")
 }
