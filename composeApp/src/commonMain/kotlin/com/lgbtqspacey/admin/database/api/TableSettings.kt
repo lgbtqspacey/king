@@ -6,6 +6,7 @@ import com.lgbtqspacey.admin.database.DatabaseDriverFactory
 import com.lgbtqspacey.admin.database.SharedDatabase
 import com.lgbtqspacey.database.Settings
 import io.github.aakira.napier.Napier
+import io.sentry.kotlin.multiplatform.Sentry
 
 class TableSettings(databaseDriver: DatabaseDriverFactory) {
     private val sharedDatabase = SharedDatabase(databaseDriver)
@@ -19,6 +20,7 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
             return true
         } catch (exception: Exception) {
             Napier.e("TableSettings :: toggleDarkMode", exception)
+            Sentry.captureException(exception)
             return false
         }
     }
@@ -32,6 +34,7 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
             return true
         } catch (exception: Exception) {
             Napier.e("TableSettings :: toggleAutoUpdate", exception)
+            Sentry.captureException(exception)
             return false
         }
     }
@@ -45,6 +48,7 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
             }
         } catch (exception: Exception) {
             Napier.e("TableSettings :: getSettings", exception)
+            Sentry.captureException(exception)
         }
 
         return settings ?: Settings( "true", "true")
@@ -58,6 +62,7 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
             return true
         } catch (exception: Exception) {
             Napier.e("TableSettings :: deleteSettings", exception)
+            Sentry.captureException(exception)
             return false
         }
     }

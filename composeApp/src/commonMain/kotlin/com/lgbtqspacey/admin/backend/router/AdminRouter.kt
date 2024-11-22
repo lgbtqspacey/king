@@ -16,6 +16,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.sentry.kotlin.multiplatform.Sentry
 
 class AdminRouter {
     object Users {
@@ -28,6 +29,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: createUser", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -41,6 +43,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: getUsers", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -55,6 +58,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: updateUser", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -68,6 +72,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: deleteUser", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -83,6 +88,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: createRole", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -96,6 +102,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: getRoles", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -110,6 +117,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: updateRole", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -123,6 +131,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: deleteRole", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -138,6 +147,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: createReport", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -151,6 +161,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: getReports", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -166,6 +177,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: updateReports", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -179,6 +191,7 @@ class AdminRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AdminRouter :: deleteReport", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }

@@ -14,6 +14,7 @@ import com.lgbtqspacey.admin.getPlatform
 import com.lgbtqspacey.database.Session
 import io.github.aakira.napier.Napier
 import io.ktor.http.HttpStatusCode
+import io.sentry.kotlin.multiplatform.Sentry
 import org.jetbrains.compose.resources.getString
 
 class AuthAdapter {
@@ -61,6 +62,7 @@ class AuthAdapter {
             return result
         } catch (exception: Exception) {
             Napier.e("AuthAdapter :: Login", exception)
+            Sentry.captureException(exception)
             return result
         }
     }
@@ -87,6 +89,7 @@ class AuthAdapter {
             return result
         } catch (exception: Exception) {
             Napier.e("AuthAdapter :: Logout", exception)
+            Sentry.captureException(exception)
             return result
         }
     }
@@ -113,6 +116,7 @@ class AuthAdapter {
             return result
         } catch (exception: Exception) {
             Napier.e("AuthAdapter :: LogoutAllDevices", exception)
+            Sentry.captureException(exception)
             return result
         }
     }
@@ -129,6 +133,7 @@ class AuthAdapter {
             }
         } catch (exception: Exception) {
             Napier.e("AuthAdapter :: Login :: Confirmation", exception)
+            Sentry.captureException(exception)
         }
         return result
     }

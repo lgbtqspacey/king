@@ -6,6 +6,7 @@ import com.lgbtqspacey.admin.database.DatabaseDriverFactory
 import com.lgbtqspacey.admin.database.SharedDatabase
 import com.lgbtqspacey.database.Session
 import io.github.aakira.napier.Napier
+import io.sentry.kotlin.multiplatform.Sentry
 
 class TableSession(databaseDriver: DatabaseDriverFactory) {
     private val sharedDatabase = SharedDatabase(databaseDriver)
@@ -22,6 +23,7 @@ class TableSession(databaseDriver: DatabaseDriverFactory) {
             return true
         } catch (exception: Exception) {
             Napier.e("TableSession :: createSession", exception)
+            Sentry.captureException(exception)
             return false
         }
     }
@@ -34,6 +36,7 @@ class TableSession(databaseDriver: DatabaseDriverFactory) {
             }
         } catch (exception: Exception) {
             Napier.e("TableSession :: getSession", exception)
+            Sentry.captureException(exception)
         }
 
         return session ?: Session("", "", "")
@@ -47,6 +50,7 @@ class TableSession(databaseDriver: DatabaseDriverFactory) {
             return true
         } catch (exception: Exception) {
             Napier.e("TableSession :: deleteSession", exception)
+            Sentry.captureException(exception)
             return false
         }
     }

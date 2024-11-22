@@ -9,6 +9,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.sentry.kotlin.multiplatform.Sentry
 
 class AuthRouter {
     companion object {
@@ -24,6 +25,7 @@ class AuthRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AuthRouter :: Login", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -43,6 +45,7 @@ class AuthRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AuthRouter :: Login", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -58,6 +61,7 @@ class AuthRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AuthRouter :: Logout", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
@@ -73,6 +77,7 @@ class AuthRouter {
                 }
             } catch (exception: Exception) {
                 Napier.e("AuthRouter :: LogoutAllDevices", exception)
+                Sentry.captureException(exception)
                 return null
             }
         }
