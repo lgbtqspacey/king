@@ -22,6 +22,7 @@
     <string name="roles">Cargos</string>
     <string name="colaborators">Colaboradories</string>
     <string name="settings">Configurações</string>
+    <string name="dashboard">Início</string>
     <string name="logout">Sair</string>
     <string name="reports">Relatórios</string>
     <string name="details">Detalhes</string>
@@ -32,4 +33,10 @@
     <string name="open_a_ticket">Abra um ticket no Discord</string>
     <string name="toggle_light_mode">Mudar para modo claro</string>
     <string name="toggle_dark_mode">Mudar para modo escuro</string>
+    <string name="restart_to_apply">Reinicie o applicativo para aplicar as alterações</string>
+    <string name="search_updates">Buscar atualizações</string>
+    <string name="update">Atualizar</string>
+    <string name="logout_confirmation">Deseja sair?</string>
+    <string name="yes">Sim</string>
+    <string name="no_back">Não, voltar</string>
 </resources>

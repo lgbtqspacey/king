@@ -9,14 +9,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -38,8 +36,6 @@ import com.lgbtqspacey.admin.commonMain.composeResources.Res
 import com.lgbtqspacey.admin.commonMain.composeResources.`continue`
 import com.lgbtqspacey.admin.commonMain.composeResources.fill_all_fields
 import com.lgbtqspacey.admin.commonMain.composeResources.hide_password
-import com.lgbtqspacey.admin.commonMain.composeResources.ic_dark_mode
-import com.lgbtqspacey.admin.commonMain.composeResources.ic_light_mode
 import com.lgbtqspacey.admin.commonMain.composeResources.ic_visibility
 import com.lgbtqspacey.admin.commonMain.composeResources.ic_visibility_off
 import com.lgbtqspacey.admin.commonMain.composeResources.log_into_account
@@ -47,13 +43,10 @@ import com.lgbtqspacey.admin.commonMain.composeResources.open_a_ticket
 import com.lgbtqspacey.admin.commonMain.composeResources.password
 import com.lgbtqspacey.admin.commonMain.composeResources.problems_to_log_in
 import com.lgbtqspacey.admin.commonMain.composeResources.show_password
-import com.lgbtqspacey.admin.commonMain.composeResources.toggle_dark_mode
-import com.lgbtqspacey.admin.commonMain.composeResources.toggle_light_mode
 import com.lgbtqspacey.admin.commonMain.composeResources.username
 import com.lgbtqspacey.admin.getPlatform
 import com.lgbtqspacey.admin.helpers.Dimensions
 import com.lgbtqspacey.admin.helpers.Screens
-import com.lgbtqspacey.admin.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
 import org.jetbrains.compose.resources.getString

@@ -62,11 +62,12 @@ fun App() {
                     }
 
                     if (loaded) {
-                        if (isLoggedIn) {
-                            navigator.navigate(Screens.DASHBOARD)
-                        } else {
-                            navigator.navigate(Screens.LOGIN)
-                        }
+//                        if (isLoggedIn) {
+//                            navigator.navigate(Screens.DASHBOARD)
+//                        } else {
+//                            navigator.navigate(Screens.LOGIN)
+//                        }
+                        navigator.navigate(Screens.SETTINGS)
                     }
                 }
 

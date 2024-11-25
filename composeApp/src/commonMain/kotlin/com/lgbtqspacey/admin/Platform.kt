@@ -13,7 +13,6 @@ abstract class  Platform {
             options.dsn = Secrets.SENTRY_DNS
             options.release = "${platform}_v${version}"
             options.tracesSampleRate = 1.0
-            options.debug = true
         }
     }
 }

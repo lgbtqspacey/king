@@ -14,7 +14,7 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
     suspend fun toggleDarkMode(): Boolean {
         try {
             sharedDatabase { db ->
-                val isDarkMode = db.settingsQueries.getSettings().awaitAsOne().isDarkMode.toBoolean()
+                val isDarkMode = db.settingsQueries.getSettings().awaitAsOneOrNull()?.isDarkMode.toBoolean()
                 db.settingsQueries.updateIsDarkTheme((!isDarkMode).toString())
             }
             return true
@@ -28,7 +28,7 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
     suspend fun toggleAutoUpdate(): Boolean {
         try {
             sharedDatabase { db ->
-                val isAutoUpdate = db.settingsQueries.getSettings().awaitAsOne().isAutoUpdate.toBoolean()
+                val isAutoUpdate = db.settingsQueries.getSettings().awaitAsOneOrNull()?.isAutoUpdate.toBoolean()
                 db.settingsQueries.updateIsAutoUpdate((!isAutoUpdate).toString())
             }
             return true
