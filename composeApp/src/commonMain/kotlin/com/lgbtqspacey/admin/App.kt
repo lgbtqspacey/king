@@ -37,7 +37,7 @@ fun App() {
         val settings = TableSettings(getPlatform().databaseDriver).getSettings()
 
         isLoggedIn = session.token.isNotEmpty()
-        isDarkMode = settings.isDarkMode.toBoolean()
+        isDarkMode = settings.isDarkMode
         loaded = true
     }
 

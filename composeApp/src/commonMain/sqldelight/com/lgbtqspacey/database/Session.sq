@@ -1,11 +1,18 @@
 CREATE TABLE IF NOT EXISTS Session(
-    token TEXT NOT NULL PRIMARY KEY DEFAULT "",
-    expiration TEXT NOT NULL DEFAULT "",
-    userId TEXT NOT NULL DEFAULT ""
+    token TEXT PRIMARY KEY,
+    expiration TEXT,
+    userId TEXT,
+    name TEXT,
+    accessLevel TEXT,
+    pronouns TEXT
 );
 
 insertSession:
 INSERT OR REPLACE INTO Session(token, expiration, userId)
+VALUES (?, ?, ?);
+
+insertUserInfo:
+INSERT OR REPLACE INTO Session(name, accessLevel, pronouns)
 VALUES (?, ?, ?);
 
 getSession:

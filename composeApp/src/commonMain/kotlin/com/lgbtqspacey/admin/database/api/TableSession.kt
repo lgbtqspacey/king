@@ -3,7 +3,7 @@ package com.lgbtqspacey.admin.database.api
 import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import com.lgbtqspacey.admin.database.DatabaseDriverFactory
 import com.lgbtqspacey.admin.database.SharedDatabase
-import com.lgbtqspacey.database.Session
+import com.lgbtqspacey.admin.database.model.Session
 import io.github.aakira.napier.Napier
 import io.sentry.kotlin.multiplatform.Sentry
 
@@ -16,7 +16,7 @@ class TableSession(databaseDriver: DatabaseDriverFactory) {
                 db.sessionQueries.insertSession(
                     token = session.token,
                     expiration = session.expiration,
-                    userId = session.userId
+                    userId = session.userId,
                 )
             }
             return true
@@ -27,11 +27,36 @@ class TableSession(databaseDriver: DatabaseDriverFactory) {
         }
     }
 
+    suspend fun setUserInfo(session: Session): Boolean {
+        try {
+            sharedDatabase { db ->
+                db.sessionQueries.insertUserInfo(
+                    name = session.name,
+                    accessLevel = session.accessLevel,
+                    pronouns = session.pronouns,
+                )
+            }
+            return true
+        } catch (exception: Exception) {
+            Napier.e("TableSession :: setUserInfo", exception)
+            Sentry.captureException(exception)
+            return false
+        }
+    }
+
     suspend fun getSession(): Session {
         var session: Session? = null
         try {
             sharedDatabase { db ->
-                session = db.sessionQueries.getSession().awaitAsOneOrNull()
+                val data = db.sessionQueries.getSession().awaitAsOneOrNull()
+                session = Session(
+                    token = data?.token ?: "",
+                    expiration = data?.expiration ?: "",
+                    userId = data?.userId ?: "",
+                    name = data?.name ?: "",
+                    accessLevel = data?.accessLevel ?: "",
+                    pronouns = data?.pronouns ?: "",
+                )
             }
         } catch (exception: Exception) {
             Napier.e("TableSession :: getSession", exception)

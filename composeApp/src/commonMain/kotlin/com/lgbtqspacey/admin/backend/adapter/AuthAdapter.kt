@@ -1,6 +1,7 @@
 package com.lgbtqspacey.admin.backend.adapter
 
 import com.lgbtqspacey.admin.backend.model.ApiResult
+import com.lgbtqspacey.admin.backend.model.Confirmation
 import com.lgbtqspacey.admin.backend.model.Login
 import com.lgbtqspacey.admin.backend.router.AuthRouter
 import com.lgbtqspacey.admin.backend.router.Backend
@@ -10,9 +11,10 @@ import com.lgbtqspacey.admin.commonMain.composeResources.invalid_credentials
 import com.lgbtqspacey.admin.commonMain.composeResources.something_went_wrong
 import com.lgbtqspacey.admin.commonMain.composeResources.user_not_found
 import com.lgbtqspacey.admin.database.api.TableSession
+import com.lgbtqspacey.admin.database.model.Session
 import com.lgbtqspacey.admin.getPlatform
-import com.lgbtqspacey.database.Session
 import io.github.aakira.napier.Napier
+import io.ktor.client.call.body
 import io.ktor.http.HttpStatusCode
 import io.sentry.kotlin.multiplatform.Sentry
 import org.jetbrains.compose.resources.getString
@@ -32,11 +34,22 @@ class AuthAdapter {
                     if (token.isNullOrEmpty() || expiration.isNullOrEmpty() || userId.isNullOrEmpty()) {
                         return result
                     } else {
+                        val tableSession = TableSession(getPlatform().databaseDriver)
                         val session = Session(token, expiration, userId)
-                        val writeToDatabase = TableSession(getPlatform().databaseDriver).createSession(session)
+                        val writeToDatabase = tableSession.createSession(session)
 
                         if (writeToDatabase) {
-                            result = sendConfirmation(token, userId)
+                            val confirmation = sendConfirmation(token, userId)
+                            if (confirmation === null) {
+                                return result
+                            } else {
+                                val userInfo = Session(
+                                    name = confirmation.name,
+                                    accessLevel = confirmation.accessLevel,
+                                    pronouns = confirmation.pronouns,
+                                )
+                                tableSession.setUserInfo(userInfo)
+                            }
                         } else {
                             return result
                         }
@@ -121,15 +134,15 @@ class AuthAdapter {
         }
     }
 
-    private suspend fun sendConfirmation(token: String, userId: String): ApiResult {
-        var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
+    private suspend fun sendConfirmation(token: String, userId: String): Confirmation? {
+        var result: Confirmation? = null
         try {
-            val confirmationResult = AuthRouter.loginConfirmation(token, userId)
+            val confirmation = AuthRouter.loginConfirmation(token, userId)
 
-            if (confirmationResult?.status == HttpStatusCode.OK) {
-                result = ApiResult(true)
+            if (confirmation?.status == HttpStatusCode.OK) {
+                result = confirmation.body()
             } else {
-                return result
+                return null
             }
         } catch (exception: Exception) {
             Napier.e("AuthAdapter :: Login :: Confirmation", exception)

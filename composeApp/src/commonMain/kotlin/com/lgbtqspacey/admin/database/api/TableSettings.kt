@@ -1,10 +1,9 @@
 package com.lgbtqspacey.admin.database.api
 
-import app.cash.sqldelight.async.coroutines.awaitAsOne
 import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import com.lgbtqspacey.admin.database.DatabaseDriverFactory
 import com.lgbtqspacey.admin.database.SharedDatabase
-import com.lgbtqspacey.database.Settings
+import com.lgbtqspacey.admin.database.model.Settings
 import io.github.aakira.napier.Napier
 import io.sentry.kotlin.multiplatform.Sentry
 
@@ -44,14 +43,18 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
 
         try {
             sharedDatabase { db ->
-                settings = db.settingsQueries.getSettings().awaitAsOneOrNull()
+                val data = db.settingsQueries.getSettings().awaitAsOneOrNull()
+                settings = Settings(
+                    isAutoUpdate = data?.isAutoUpdate.toBoolean(),
+                    isDarkMode = data?.isDarkMode.toBoolean(),
+                )
             }
         } catch (exception: Exception) {
             Napier.e("TableSettings :: getSettings", exception)
             Sentry.captureException(exception)
         }
 
-        return settings ?: Settings( "true", "true")
+        return settings ?: Settings( isDarkMode = true, isAutoUpdate = true)
     }
 
     suspend fun deleteSettings(): Boolean {
