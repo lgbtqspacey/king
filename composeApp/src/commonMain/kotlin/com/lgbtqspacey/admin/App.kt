@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import com.lgbtqspacey.admin.database.api.TableSession
 import com.lgbtqspacey.admin.database.api.TableSettings
 import com.lgbtqspacey.admin.features.auth.Login
-import com.lgbtqspacey.admin.features.dashboard.DashBoard
+import com.lgbtqspacey.admin.features.dashboard.Home
 import com.lgbtqspacey.admin.features.dashboard.Settings
 import com.lgbtqspacey.admin.helpers.Screens
 import com.lgbtqspacey.admin.ui.theme.AppTheme
@@ -63,7 +63,7 @@ fun App() {
 
                     if (loaded) {
 //                        if (isLoggedIn) {
-//                            navigator.navigate(Screens.DASHBOARD)
+//                            navigator.navigate(Screens.HOME)
 //                        } else {
 //                            navigator.navigate(Screens.LOGIN)
 //                        }
@@ -75,12 +75,24 @@ fun App() {
                     Login(navigator)
                 }
 
-                scene(Screens.DASHBOARD) {
-                    DashBoard(navigator)
+                scene(Screens.HOME) {
+                    Home(navigator)
                 }
 
                 scene(Screens.SETTINGS) {
                     Settings(navigator)
+                }
+
+                scene(Screens.USERS) {
+                    // todo
+                }
+
+                scene(Screens.REPORTS) {
+                    // todo
+                }
+
+                scene(Screens.ROLES) {
+                    // todo
                 }
             }
         }

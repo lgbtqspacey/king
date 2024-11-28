@@ -57,7 +57,7 @@ fun Settings(navigator: Navigator) {
                 .align(Alignment.BottomCenter)
         ) {
             Button(
-                onClick = { navigator.navigate(Screens.DASHBOARD) },
+                onClick = { navigator.navigate(Screens.HOME) },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = Dimensions.SIZE_16.dp())

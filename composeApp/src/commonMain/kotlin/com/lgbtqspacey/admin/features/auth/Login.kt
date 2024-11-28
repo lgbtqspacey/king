@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import com.lgbtqspacey.admin.backend.adapter.AuthAdapter
+import com.lgbtqspacey.admin.backend.model.Login
 import com.lgbtqspacey.admin.commonMain.composeResources.Res
 import com.lgbtqspacey.admin.commonMain.composeResources.`continue`
 import com.lgbtqspacey.admin.commonMain.composeResources.fill_all_fields
@@ -80,10 +81,10 @@ fun Login(navigator: Navigator) {
             }
         } else {
             coroutineScope.launch {
-                val result = AuthAdapter().login(username, password)
+                val result = AuthAdapter().login(Login(username, password))
 
                 if (result.isSuccess) {
-                    navigator.navigate(Screens.DASHBOARD)
+                    navigator.navigate(Screens.HOME)
                 } else {
                     errorMessage = result.errorMessage
                     errorCode = "Código do erro: ${result.errorCode}"

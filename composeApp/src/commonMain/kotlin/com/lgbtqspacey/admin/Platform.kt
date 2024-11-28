@@ -1,6 +1,7 @@
 package com.lgbtqspacey.admin
 
 import com.lgbtqspacey.admin.database.DatabaseDriverFactory
+import io.sentry.SentryOptions.BeforeSendCallback
 import io.sentry.kotlin.multiplatform.Sentry
 
 abstract class  Platform {

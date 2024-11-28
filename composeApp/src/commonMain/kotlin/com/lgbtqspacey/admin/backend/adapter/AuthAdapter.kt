@@ -1,7 +1,7 @@
 package com.lgbtqspacey.admin.backend.adapter
 
 import com.lgbtqspacey.admin.backend.model.ApiResult
-import com.lgbtqspacey.admin.backend.model.Confirmation
+import com.lgbtqspacey.admin.backend.model.Login
 import com.lgbtqspacey.admin.backend.router.AuthRouter
 import com.lgbtqspacey.admin.backend.router.Backend
 import com.lgbtqspacey.admin.commonMain.composeResources.Res
@@ -18,10 +18,10 @@ import io.sentry.kotlin.multiplatform.Sentry
 import org.jetbrains.compose.resources.getString
 
 class AuthAdapter {
-    suspend fun login(username: String, password: String): ApiResult {
+    suspend fun login(login: Login): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
         try {
-            val response = AuthRouter.login(username, password)
+            val response = AuthRouter.login(login, getPlatform().name)
 
             when (response?.status) {
                 HttpStatusCode.OK -> {
@@ -36,7 +36,7 @@ class AuthAdapter {
                         val writeToDatabase = TableSession(getPlatform().databaseDriver).createSession(session)
 
                         if (writeToDatabase) {
-                            result = sendConfirmation(Confirmation(token, expiration, userId, getPlatform().name))
+                            result = sendConfirmation(token, userId)
                         } else {
                             return result
                         }
@@ -121,10 +121,10 @@ class AuthAdapter {
         }
     }
 
-    private suspend fun sendConfirmation(confirmation: Confirmation): ApiResult {
+    private suspend fun sendConfirmation(token: String, userId: String): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
         try {
-            val confirmationResult = AuthRouter.loginConfirmation(confirmation)
+            val confirmationResult = AuthRouter.loginConfirmation(token, userId)
 
             if (confirmationResult?.status == HttpStatusCode.OK) {
                 result = ApiResult(true)
