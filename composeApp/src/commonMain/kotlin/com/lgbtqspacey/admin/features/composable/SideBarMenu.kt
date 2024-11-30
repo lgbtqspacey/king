@@ -101,7 +101,7 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
         MenuOption(
             text = stringResource(Res.string.home),
             icon = Res.drawable.ic_home,
-            onClick = { navigator.navigate(Screens.HOME) },
+            onClick = { navigator.navigate("/app") },
             enabled = current !== SideBarOption.HOME,
             modifier = Modifier.constrainAs(home) {
                 top.linkTo(dividerTop.bottom, Dimensions.SIZE_16.dp())

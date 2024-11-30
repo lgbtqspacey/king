@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS Session(
-    token TEXT PRIMARY KEY,
+    id INTEGER PRIMARY KEY NOT NULL,
+    token TEXT,
     expiration TEXT,
     userId TEXT,
     name TEXT,
@@ -7,16 +8,22 @@ CREATE TABLE IF NOT EXISTS Session(
     pronouns TEXT
 );
 
+INSERT OR REPLACE INTO Session(id)
+VALUES (1);
+
 insertSession:
-INSERT OR REPLACE INTO Session(token, expiration, userId)
-VALUES (?, ?, ?);
+UPDATE Session
+SET token = ?, expiration = ?, userId = ?
+WHERE id = 1;
 
 insertUserInfo:
-INSERT OR REPLACE INTO Session(name, accessLevel, pronouns)
-VALUES (?, ?, ?);
+UPDATE Session
+SET name = ?, accessLevel = ?, pronouns = ?
+WHERE id = 1;
 
 getSession:
-SELECT * FROM Session;
+SELECT * FROM Session
+WHERE id = 1;
 
 deleteSession:
 DELETE FROM Session;

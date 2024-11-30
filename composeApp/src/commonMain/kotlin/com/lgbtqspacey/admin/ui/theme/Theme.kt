@@ -4,6 +4,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -81,13 +86,12 @@ val darkScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
-
 @Composable
 fun AppTheme(isDarkMode: Boolean, content: @Composable() () -> Unit) {
-  MaterialTheme(
-    colorScheme = if (isDarkMode) darkScheme else lightScheme,
-    typography = getTypography(),
-    content = content
-  )
+    MaterialTheme(
+        colorScheme = if (isDarkMode) darkScheme else lightScheme,
+        typography = getTypography(),
+        content = content
+    )
 }
 

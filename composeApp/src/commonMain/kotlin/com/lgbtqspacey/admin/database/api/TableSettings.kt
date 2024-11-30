@@ -1,5 +1,6 @@
 package com.lgbtqspacey.admin.database.api
 
+import app.cash.sqldelight.async.coroutines.awaitAsOne
 import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import com.lgbtqspacey.admin.database.DatabaseDriverFactory
 import com.lgbtqspacey.admin.database.SharedDatabase
@@ -13,9 +14,16 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
     suspend fun toggleDarkMode(): Boolean {
         try {
             sharedDatabase { db ->
-                val isDarkMode = db.settingsQueries.getSettings().awaitAsOneOrNull()?.isDarkMode.toBoolean()
-                db.settingsQueries.updateIsDarkTheme((!isDarkMode).toString())
+                val current = db.settingsQueries.getSettings().awaitAsOneOrNull()?.isDarkMode.toBoolean()
+                println("current: $current")
+
+                db.settingsQueries.updateIsDarkTheme((!current).toString())
+                println("update")
+
+                val up = db.settingsQueries.getSettings().awaitAsOneOrNull()
+                println("updated: $up")
             }
+
             return true
         } catch (exception: Exception) {
             Napier.e("TableSettings :: toggleDarkMode", exception)
@@ -44,9 +52,10 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
         try {
             sharedDatabase { db ->
                 val data = db.settingsQueries.getSettings().awaitAsOneOrNull()
+                println("get: $data")
                 settings = Settings(
-                    isAutoUpdate = data?.isAutoUpdate.isNullOrEmpty() || data?.isAutoUpdate.equals("true"),
-                    isDarkMode = data?.isDarkMode.isNullOrEmpty() || data?.isDarkMode.equals("true"),
+                    isAutoUpdate = data?.isAutoUpdate.toBoolean(),
+                    isDarkMode = data?.isDarkMode.toBoolean(),
                 )
             }
         } catch (exception: Exception) {

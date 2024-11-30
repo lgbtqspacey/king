@@ -7,7 +7,8 @@ import com.lgbtqspacey.database.AppDatabase
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class DatabaseDriverFactory {
     actual suspend fun createDriver(): SqlDriver {
-        return JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
-            .also { AppDatabase.Schema.create(it).await() }
+        val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:admin.db")
+        AppDatabase.Schema.create(driver).await()
+        return driver
     }
 }

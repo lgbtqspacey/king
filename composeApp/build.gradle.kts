@@ -114,7 +114,8 @@ sqldelight {
         create("AppDatabase") {
             packageName.set("com.lgbtqspacey.database")
             generateAsync.set(true)
-
+            srcDirs.setFrom("src/commonMain/sqldelight")
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
         }
     }
 }

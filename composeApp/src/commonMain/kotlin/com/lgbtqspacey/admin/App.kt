@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.lgbtqspacey.admin.database.Database
 import com.lgbtqspacey.admin.database.api.TableSession
 import com.lgbtqspacey.admin.database.api.TableSettings
 import com.lgbtqspacey.admin.features.auth.Login
@@ -30,24 +31,26 @@ fun App() {
     val coroutineScope = rememberCoroutineScope()
     var isLoggedIn by remember { mutableStateOf(false) }
     var loaded by remember { mutableStateOf(false) }
-    var isDarkMode by remember { mutableStateOf(true) }
+    val isDarkMode = remember { mutableStateOf(false) }
 
     coroutineScope.launch {
-        val session = TableSession(getPlatform().databaseDriver).getSession()
-        val settings = TableSettings(getPlatform().databaseDriver).getSettings()
-
+        val session = Database().session.getSession()
+        isDarkMode.value = Database().settings.getSettings().isDarkMode
         isLoggedIn = session.token.isNotEmpty()
-        isDarkMode = settings.isDarkMode
         loaded = true
     }
 
     PreComposeApp {
         val navigator = rememberNavigator()
-        AppTheme(isDarkMode) {
+        AppTheme(isDarkMode.value) {
             NavHost(
                 navigator = navigator,
                 initialRoute = Screens.LOADING,
             ) {
+                scene("/app") {
+                    App()
+                }
+
                 scene(Screens.LOADING) {
                     Box(
                         contentAlignment = Alignment.Center,
@@ -67,7 +70,7 @@ fun App() {
 //                        } else {
 //                            navigator.navigate(Screens.LOGIN)
 //                        }
-                        navigator.navigate(Screens.SETTINGS)
+                        navigator.navigate(Screens.HOME)
                     }
                 }
 
