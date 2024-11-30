@@ -39,14 +39,14 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
     }
 
     suspend fun getSettings(): Settings {
-        var settings: Settings? = null
+        var settings = Settings()
 
         try {
             sharedDatabase { db ->
                 val data = db.settingsQueries.getSettings().awaitAsOneOrNull()
                 settings = Settings(
-                    isAutoUpdate = data?.isAutoUpdate.toBoolean(),
-                    isDarkMode = data?.isDarkMode.toBoolean(),
+                    isAutoUpdate = data?.isAutoUpdate.isNullOrEmpty() || data?.isAutoUpdate.equals("true"),
+                    isDarkMode = data?.isDarkMode.isNullOrEmpty() || data?.isDarkMode.equals("true"),
                 )
             }
         } catch (exception: Exception) {
@@ -54,7 +54,7 @@ class TableSettings(databaseDriver: DatabaseDriverFactory) {
             Sentry.captureException(exception)
         }
 
-        return settings ?: Settings( isDarkMode = true, isAutoUpdate = true)
+        return settings
     }
 
     suspend fun deleteSettings(): Boolean {

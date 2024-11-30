@@ -14,6 +14,7 @@
     <string name="show_password">Mostrar senha</string>
 
 <!-- Labels -->
+    <string name="home">Início</string>
     <string name="continue">Continuar</string>
     <string name="email">Email</string>
     <string name="username">Usuário</string>
@@ -22,7 +23,6 @@
     <string name="roles">Cargos</string>
     <string name="colaborators">Colaboradories</string>
     <string name="settings">Configurações</string>
-    <string name="dashboard">Início</string>
     <string name="logout">Sair</string>
     <string name="reports">Relatórios</string>
     <string name="details">Detalhes</string>

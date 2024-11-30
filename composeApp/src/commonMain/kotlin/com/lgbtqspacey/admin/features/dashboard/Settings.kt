@@ -62,7 +62,7 @@ fun Settings(navigator: Navigator) {
                     .align(Alignment.CenterHorizontally)
                     .padding(top = Dimensions.SIZE_16.dp())
             ) {
-                Text(stringResource(Res.string.dashboard))
+                Text(stringResource(Res.string.home))
             }
 
             /**

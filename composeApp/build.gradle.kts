@@ -46,6 +46,7 @@ kotlin {
             implementation(libs.napier)
             implementation(libs.precompose)
             implementation(libs.sentry.sdk)
+            implementation(libs.constraintlayout.compose.multiplatform)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -94,6 +95,10 @@ compose.desktop {
             targetFormats(TargetFormat.Exe)
             packageName = "com.lgbtqspacey.admin"
             packageVersion = "1.0.0"
+            modules("java.instrument", "java.management", "java.sql", "jdk.unsupported")
+            windows {
+                iconFile.set(project.file("$rootDir/icon.ico"))
+            }
         }
     }
 }

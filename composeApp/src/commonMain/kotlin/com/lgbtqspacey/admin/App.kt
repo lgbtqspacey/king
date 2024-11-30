@@ -94,6 +94,10 @@ fun App() {
                 scene(Screens.ROLES) {
                     // todo
                 }
+
+                scene(Screens.PROFILE) {
+                    // todo
+                }
             }
         }
     }
