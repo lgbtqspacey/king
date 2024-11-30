@@ -37,6 +37,7 @@
     <string name="search_updates">Buscar atualizações</string>
     <string name="update">Atualizar</string>
     <string name="logout_confirmation">Deseja sair?</string>
+    <string name="logout_confirmation_subtitle">Todas as alterações não salvas serão perdidas.</string>
     <string name="yes">Sim</string>
     <string name="no_back">Não, voltar</string>
 </resources>

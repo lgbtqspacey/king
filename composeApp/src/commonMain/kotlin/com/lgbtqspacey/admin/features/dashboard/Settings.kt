@@ -19,11 +19,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.lgbtqspacey.admin.commonMain.composeResources.*
 import com.lgbtqspacey.admin.database.api.TableSettings
+import com.lgbtqspacey.admin.features.composable.SideBarMenu
 import com.lgbtqspacey.admin.getPlatform
 import com.lgbtqspacey.admin.helpers.Dimensions
 import com.lgbtqspacey.admin.helpers.Screens
+import com.lgbtqspacey.admin.helpers.SideBarOption
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
 import org.jetbrains.compose.resources.stringResource
@@ -41,64 +44,64 @@ fun Settings(navigator: Navigator) {
         isDarkMode = !isDarkMode
     }
 
-    /**
-     * Screen container
-     */
-    Box(
-        contentAlignment = Alignment.Center,
+    ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
     ) {
-        Column(
-            modifier = Modifier
-                .padding(top = Dimensions.SIZE_80.dp())
-                .align(Alignment.TopCenter)
-                .align(Alignment.BottomCenter)
-        ) {
-            Button(
-                onClick = { navigator.navigate(Screens.HOME) },
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = Dimensions.SIZE_16.dp())
-            ) {
-                Text(stringResource(Res.string.home))
-            }
+        val (
+            menu,
+            toggleDarkModeLabel,
+            toggleDarkModeSwitch,
+        ) = createRefs()
 
-            /**
-             * Toggle dark mode
-             */
-            Text(
-                text = if (isDarkMode) {
-                    stringResource(Res.string.toggle_light_mode)
-                } else {
-                    stringResource(Res.string.toggle_dark_mode)
-                },
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            Switch(
-                checked = isDarkMode,
-                onCheckedChange = { toggleDarkMode() },
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(Dimensions.SIZE_4.dp()),
-                thumbContent = {
-                    if (isDarkMode) {
-                        Icon(
-                            vectorResource(Res.drawable.ic_dark_mode),
-                            stringResource(Res.string.toggle_light_mode),
-                            Modifier.size(Dimensions.SIZE_12.dp())
-                        )
-                    } else {
-                        Icon(
-                            vectorResource(Res.drawable.ic_light_mode),
-                            stringResource(Res.string.toggle_dark_mode),
-                            Modifier.size(Dimensions.SIZE_12.dp())
-                        )
-                    }
-                }
-            )
+        Box(modifier = Modifier.constrainAs(menu) {
+            start.linkTo(parent.start)
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+        }) {
+            SideBarMenu(SideBarOption.SETTINGS, navigator)
         }
+
+        Text(
+            text = if (isDarkMode) {
+                stringResource(Res.string.toggle_light_mode)
+            } else {
+                stringResource(Res.string.toggle_dark_mode)
+            },
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.constrainAs(toggleDarkModeLabel) {
+                start.linkTo(menu.end)
+                end.linkTo(parent.end)
+                top.linkTo(parent.top)
+            }
+        )
+
+        Switch(
+            checked = isDarkMode,
+            onCheckedChange = { toggleDarkMode() },
+            modifier = Modifier
+                .padding(Dimensions.SIZE_4.dp())
+                .constrainAs(toggleDarkModeSwitch) {
+                    start.linkTo(menu.end)
+                    end.linkTo(parent.end)
+                    top.linkTo(toggleDarkModeLabel.bottom)
+                },
+            thumbContent = {
+                if (isDarkMode) {
+                    Icon(
+                        vectorResource(Res.drawable.ic_dark_mode),
+                        stringResource(Res.string.toggle_light_mode),
+                        Modifier.size(Dimensions.SIZE_12.dp())
+                    )
+                } else {
+                    Icon(
+                        vectorResource(Res.drawable.ic_light_mode),
+                        stringResource(Res.string.toggle_dark_mode),
+                        Modifier.size(Dimensions.SIZE_12.dp())
+                    )
+                }
+            }
+        )
     }
 }

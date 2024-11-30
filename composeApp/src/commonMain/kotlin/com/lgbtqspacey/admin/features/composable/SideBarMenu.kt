@@ -17,12 +17,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.lgbtqspacey.admin.commonMain.composeResources.Res
 import com.lgbtqspacey.admin.commonMain.composeResources.colaborators
 import com.lgbtqspacey.admin.commonMain.composeResources.home
 import com.lgbtqspacey.admin.commonMain.composeResources.ic_account_circle
-import com.lgbtqspacey.admin.commonMain.composeResources.ic_cloud_alert
 import com.lgbtqspacey.admin.commonMain.composeResources.ic_file
 import com.lgbtqspacey.admin.commonMain.composeResources.ic_group
 import com.lgbtqspacey.admin.commonMain.composeResources.ic_home
@@ -30,9 +30,13 @@ import com.lgbtqspacey.admin.commonMain.composeResources.ic_logout
 import com.lgbtqspacey.admin.commonMain.composeResources.ic_settings
 import com.lgbtqspacey.admin.commonMain.composeResources.ic_tag
 import com.lgbtqspacey.admin.commonMain.composeResources.logout
+import com.lgbtqspacey.admin.commonMain.composeResources.logout_confirmation
+import com.lgbtqspacey.admin.commonMain.composeResources.logout_confirmation_subtitle
+import com.lgbtqspacey.admin.commonMain.composeResources.no_back
 import com.lgbtqspacey.admin.commonMain.composeResources.reports
 import com.lgbtqspacey.admin.commonMain.composeResources.roles
 import com.lgbtqspacey.admin.commonMain.composeResources.settings
+import com.lgbtqspacey.admin.getPlatform
 import com.lgbtqspacey.admin.helpers.Dimensions
 import com.lgbtqspacey.admin.helpers.Screens
 import com.lgbtqspacey.admin.helpers.SideBarOption
@@ -43,11 +47,18 @@ import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
-    var name by remember { mutableStateOf("Ash") }
-    var isHidden by remember { mutableStateOf(false) }
+    var name by remember { mutableStateOf("Nome") }
+    var showConfirmLogout by remember { mutableStateOf(false) }
 
-    val confirmLogout: () -> Unit = {
-        // todo: show dialog
+    if (showConfirmLogout) {
+        Dialog(
+            titleText = stringResource(Res.string.logout_confirmation),
+            subtitleText = stringResource(Res.string.logout_confirmation_subtitle),
+            confirmBtnText = stringResource(Res.string.logout),
+            dismissBtnText = stringResource(Res.string.no_back),
+            onConfirm = { },
+            onDismiss = { showConfirmLogout = false }
+        )
     }
 
     ConstraintLayout(
@@ -64,10 +75,10 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
             collaborators,
             roles,
             reports,
-            collapse,
             dividerBottom,
             settings,
             logout,
+            version,
         ) = createRefs()
 
         MenuOption(
@@ -137,17 +148,31 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
             enabled = current !== SideBarOption.SETTINGS,
             onClick = { navigator.navigate(Screens.SETTINGS) },
             modifier = Modifier.constrainAs(settings) {
-                bottom.linkTo(logout.top, Dimensions.SIZE_16.dp())
+                bottom.linkTo(logout.top)
             }
         )
 
         MenuOption(
             text = stringResource(Res.string.logout),
             icon = Res.drawable.ic_logout,
-            onClick = { },
+            onClick = {
+                showConfirmLogout = true
+            },
             modifier = Modifier.constrainAs(logout) {
-                bottom.linkTo(parent.bottom)
+                bottom.linkTo(version.top, Dimensions.SIZE_8.dp())
             }
+        )
+
+        Text(
+            text = "v${getPlatform().version}",
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = Dimensions.SIZE_8.sp(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(version) {
+                    bottom.linkTo(parent.bottom)
+                }
         )
     }
 }
