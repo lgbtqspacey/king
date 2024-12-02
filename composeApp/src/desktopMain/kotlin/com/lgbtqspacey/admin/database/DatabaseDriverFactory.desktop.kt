@@ -8,7 +8,7 @@ import com.lgbtqspacey.database.AppDatabase
 actual class DatabaseDriverFactory {
     actual suspend fun createDriver(): SqlDriver {
         val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:admin.db")
-        AppDatabase.Schema.create(driver).await()
+        AppDatabase.Schema.create(driver)
         return driver
     }
 }

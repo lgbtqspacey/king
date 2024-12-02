@@ -14,8 +14,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.lgbtqspacey.admin.database.Database
-import com.lgbtqspacey.admin.database.api.TableSession
-import com.lgbtqspacey.admin.database.api.TableSettings
 import com.lgbtqspacey.admin.features.auth.Login
 import com.lgbtqspacey.admin.features.dashboard.Home
 import com.lgbtqspacey.admin.features.dashboard.Settings

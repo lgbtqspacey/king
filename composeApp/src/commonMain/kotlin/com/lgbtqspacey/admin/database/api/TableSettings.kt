@@ -1,16 +1,12 @@
 package com.lgbtqspacey.admin.database.api
 
-import app.cash.sqldelight.async.coroutines.awaitAsOne
 import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
-import com.lgbtqspacey.admin.database.DatabaseDriverFactory
 import com.lgbtqspacey.admin.database.SharedDatabase
 import com.lgbtqspacey.admin.database.model.Settings
 import io.github.aakira.napier.Napier
 import io.sentry.kotlin.multiplatform.Sentry
 
-class TableSettings(databaseDriver: DatabaseDriverFactory) {
-    private val sharedDatabase = SharedDatabase(databaseDriver)
-
+class TableSettings(private val sharedDatabase: SharedDatabase) {
     suspend fun toggleDarkMode(): Boolean {
         try {
             sharedDatabase { db ->
