@@ -10,7 +10,7 @@ import com.lgbtqspacey.admin.commonMain.composeResources.error_logging_out
 import com.lgbtqspacey.admin.commonMain.composeResources.invalid_credentials
 import com.lgbtqspacey.admin.commonMain.composeResources.something_went_wrong
 import com.lgbtqspacey.admin.commonMain.composeResources.user_not_found
-import com.lgbtqspacey.admin.database.api.TableSession
+import com.lgbtqspacey.admin.database.Database
 import com.lgbtqspacey.admin.database.model.Session
 import com.lgbtqspacey.admin.getPlatform
 import io.github.aakira.napier.Napier
@@ -20,6 +20,8 @@ import io.sentry.kotlin.multiplatform.Sentry
 import org.jetbrains.compose.resources.getString
 
 class AuthAdapter {
+    private val sessionDB = Database().session
+
     suspend fun login(login: Login): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
         try {
@@ -34,9 +36,8 @@ class AuthAdapter {
                     if (token.isNullOrEmpty() || expiration.isNullOrEmpty() || userId.isNullOrEmpty()) {
                         return result
                     } else {
-                        val tableSession = TableSession(getPlatform().databaseDriver)
                         val session = Session(token, expiration, userId)
-                        val writeToDatabase = tableSession.createSession(session)
+                        val writeToDatabase = sessionDB.createSession(session)
 
                         if (writeToDatabase) {
                             val confirmation = sendConfirmation(token, userId)
@@ -48,7 +49,7 @@ class AuthAdapter {
                                     accessLevel = confirmation.accessLevel,
                                     pronouns = confirmation.pronouns,
                                 )
-                                tableSession.setUserInfo(userInfo)
+                                sessionDB.setUserInfo(userInfo)
                             }
                         } else {
                             return result
@@ -84,13 +85,12 @@ class AuthAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val sessionDao = TableSession(getPlatform().databaseDriver)
-            val session = sessionDao.getSession()
+            val session = sessionDB.getSession()
 
             val response = AuthRouter.logout(session.token)
 
             if (response?.status == HttpStatusCode.OK) {
-                sessionDao.deleteSession()
+                sessionDB.deleteSession()
                 result = ApiResult(true)
             } else {
                 result = ApiResult(
@@ -111,13 +111,12 @@ class AuthAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val sessionDao = TableSession(getPlatform().databaseDriver)
-            val session = sessionDao.getSession()
+            val session = sessionDB.getSession()
 
             val response = AuthRouter.logoutAllDevices(session.userId)
 
             if (response?.status == HttpStatusCode.OK) {
-                sessionDao.deleteSession()
+                sessionDB.deleteSession()
                 result = ApiResult(true)
             } else {
                 result = ApiResult(
