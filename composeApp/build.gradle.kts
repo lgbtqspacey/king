@@ -93,11 +93,12 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Exe)
-            packageName = "com.lgbtqspacey.admin"
+            packageName = "lgbtqspaceyAdmin"
             packageVersion = "1.0.0"
             modules("java.instrument", "java.management", "java.sql", "jdk.unsupported")
             windows {
                 iconFile.set(project.file("$rootDir/icon.ico"))
+                console = true
             }
         }
     }

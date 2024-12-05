@@ -9,6 +9,7 @@ import io.sentry.kotlin.multiplatform.Sentry
 class TableSession(private val sharedDatabase: SharedDatabase) {
     suspend fun createSession(session: Session): Boolean {
         try {
+            println("set token $session")
             sharedDatabase { db ->
                 db.sessionQueries.insertSession(
                     token = session.token,
@@ -26,6 +27,7 @@ class TableSession(private val sharedDatabase: SharedDatabase) {
 
     suspend fun setUserInfo(session: Session): Boolean {
         try {
+            println("set info: $session")
             sharedDatabase { db ->
                 db.sessionQueries.insertUserInfo(
                     name = session.name,
@@ -42,7 +44,7 @@ class TableSession(private val sharedDatabase: SharedDatabase) {
     }
 
     suspend fun getSession(): Session {
-        var session: Session? = null
+        var session = Session()
         try {
             sharedDatabase { db ->
                 val data = db.sessionQueries.getSession().awaitAsOneOrNull()
@@ -55,12 +57,13 @@ class TableSession(private val sharedDatabase: SharedDatabase) {
                     pronouns = data?.pronouns ?: "",
                 )
             }
+            println("get: $session")
         } catch (exception: Exception) {
             Napier.e("TableSession :: getSession", exception)
             Sentry.captureException(exception)
         }
 
-        return session ?: Session("", "", "")
+        return session
     }
 
     suspend fun deleteSession(): Boolean {

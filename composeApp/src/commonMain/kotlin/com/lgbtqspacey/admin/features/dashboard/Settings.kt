@@ -11,9 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.lgbtqspacey.admin.database.Database
-import com.lgbtqspacey.admin.database.api.TableSettings
 import com.lgbtqspacey.admin.features.composable.SideBarMenu
-import com.lgbtqspacey.admin.getPlatform
 import com.lgbtqspacey.admin.helpers.SideBarOption
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
@@ -56,7 +54,7 @@ fun Settings(navigator: Navigator) {
 
         Button(onClick = {
             coroutineScope.launch {
-                Database().settings.getSettings()
+                Database().session.getSession()
             }
         },
             modifier = Modifier.constrainAs(toggleDarkModeSwitch) {

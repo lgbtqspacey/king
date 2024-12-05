@@ -50,6 +50,7 @@ class AuthAdapter {
                                     pronouns = confirmation.pronouns,
                                 )
                                 sessionDB.setUserInfo(userInfo)
+                                result = ApiResult(true)
                             }
                         } else {
                             return result

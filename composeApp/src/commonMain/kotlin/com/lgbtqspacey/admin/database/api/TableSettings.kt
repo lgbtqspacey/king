@@ -10,16 +10,9 @@ class TableSettings(private val sharedDatabase: SharedDatabase) {
     suspend fun toggleDarkMode(): Boolean {
         try {
             sharedDatabase { db ->
-                val current = db.settingsQueries.getSettings().awaitAsOneOrNull()?.isDarkMode.toBoolean()
-                println("current: $current")
-
-                db.settingsQueries.updateIsDarkTheme((!current).toString())
-                println("update")
-
-                val up = db.settingsQueries.getSettings().awaitAsOneOrNull()
-                println("updated: $up")
+                val isDarkMode = db.settingsQueries.getSettings().awaitAsOneOrNull()?.isDarkMode.toBoolean()
+                db.settingsQueries.updateIsDarkTheme((!isDarkMode).toString())
             }
-
             return true
         } catch (exception: Exception) {
             Napier.e("TableSettings :: toggleDarkMode", exception)
@@ -48,7 +41,6 @@ class TableSettings(private val sharedDatabase: SharedDatabase) {
         try {
             sharedDatabase { db ->
                 val data = db.settingsQueries.getSettings().awaitAsOneOrNull()
-                println("get: $data")
                 settings = Settings(
                     isAutoUpdate = data?.isAutoUpdate.toBoolean(),
                     isDarkMode = data?.isDarkMode.toBoolean(),

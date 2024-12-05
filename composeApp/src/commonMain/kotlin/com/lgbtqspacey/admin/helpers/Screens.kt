@@ -1,6 +1,7 @@
 package com.lgbtqspacey.admin.helpers
 
 object Screens {
+    const val APP = "/app"
     const val LOADING = "/loading"
     const val LOGIN = "/login"
     const val HOME = "/home"

@@ -30,7 +30,7 @@ class Backend {
             }
             install(Logging) {
                 logger = Logger.SIMPLE
-                level = LogLevel.INFO
+                level = LogLevel.ALL
                 sanitizeHeader {
                     it == HttpHeaders.Authorization ||
                         it == HttpHeaders.AuthenticationInfo ||

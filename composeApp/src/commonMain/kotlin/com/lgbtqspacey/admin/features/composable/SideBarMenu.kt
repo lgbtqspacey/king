@@ -15,12 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.lgbtqspacey.admin.backend.adapter.AuthAdapter
 import com.lgbtqspacey.admin.commonMain.composeResources.Res
 import com.lgbtqspacey.admin.commonMain.composeResources.colaborators
+import com.lgbtqspacey.admin.commonMain.composeResources.`continue`
+import com.lgbtqspacey.admin.commonMain.composeResources.error
 import com.lgbtqspacey.admin.commonMain.composeResources.home
 import com.lgbtqspacey.admin.commonMain.composeResources.ic_account_circle
 import com.lgbtqspacey.admin.commonMain.composeResources.ic_file
@@ -36,10 +40,12 @@ import com.lgbtqspacey.admin.commonMain.composeResources.no_back
 import com.lgbtqspacey.admin.commonMain.composeResources.reports
 import com.lgbtqspacey.admin.commonMain.composeResources.roles
 import com.lgbtqspacey.admin.commonMain.composeResources.settings
+import com.lgbtqspacey.admin.database.Database
 import com.lgbtqspacey.admin.getPlatform
 import com.lgbtqspacey.admin.helpers.Dimensions
 import com.lgbtqspacey.admin.helpers.Screens
 import com.lgbtqspacey.admin.helpers.SideBarOption
+import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
@@ -47,8 +53,20 @@ import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
+    val coroutineScope = rememberCoroutineScope()
+
     var name by remember { mutableStateOf("Nome") }
+    var isSuccessfulLogout by remember { mutableStateOf(false) }
     var showConfirmLogout by remember { mutableStateOf(false) }
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+
+    /***********************
+     * Conditional changes
+     ***********************/
+    coroutineScope.launch {
+        name = Database().session.getSession().name
+    }
 
     if (showConfirmLogout) {
         Dialog(
@@ -56,11 +74,38 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
             subtitleText = stringResource(Res.string.logout_confirmation_subtitle),
             confirmBtnText = stringResource(Res.string.logout),
             dismissBtnText = stringResource(Res.string.no_back),
-            onConfirm = { },
+            onConfirm = {
+                coroutineScope.launch {
+                    val logoutResult = AuthAdapter().logout()
+                    if (logoutResult.isSuccess) {
+                        isSuccessfulLogout = true
+                    } else {
+                        errorMessage = "${logoutResult.errorCode} - ${logoutResult.errorMessage}"
+                        showConfirmLogout = false
+                        showErrorDialog = true
+                    }
+                }
+            },
             onDismiss = { showConfirmLogout = false }
         )
     }
 
+    if (showErrorDialog) {
+        ErrorDialog(
+            titleText = stringResource(Res.string.error),
+            errorMessage = errorMessage,
+            btnText = stringResource(Res.string.`continue`),
+            onDismiss = { showErrorDialog = false },
+        )
+    }
+
+    if (isSuccessfulLogout) {
+        navigator.navigate(Screens.APP)
+    }
+
+    /******
+     * UI
+     *****/
     ConstraintLayout(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surfaceContainer)
@@ -101,7 +146,7 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
         MenuOption(
             text = stringResource(Res.string.home),
             icon = Res.drawable.ic_home,
-            onClick = { navigator.navigate("/app") },
+            onClick = { navigator.navigate(Screens.APP) },
             enabled = current !== SideBarOption.HOME,
             modifier = Modifier.constrainAs(home) {
                 top.linkTo(dividerTop.bottom, Dimensions.SIZE_16.dp())

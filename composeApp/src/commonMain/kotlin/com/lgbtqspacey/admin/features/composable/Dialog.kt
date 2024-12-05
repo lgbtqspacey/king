@@ -1,11 +1,9 @@
 package com.lgbtqspacey.admin.features.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -85,6 +83,69 @@ fun Dialog(
                 }
             ) {
                 Text(confirmBtnText)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ErrorDialog(
+    titleText: String,
+    errorMessage: String,
+    btnText: String,
+    onDismiss: () -> Unit,
+) {
+    BasicAlertDialog(
+        onDismissRequest = onDismiss,
+    ) {
+        ConstraintLayout(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.errorContainer)
+        ) {
+            val (
+                title,
+                errorMsg,
+                button,
+            ) = createRefs()
+
+            Text(
+                text = titleText,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.constrainAs(title) {
+                    end.linkTo(parent.end, Dimensions.SIZE_16.dp())
+                    start.linkTo(parent.start, Dimensions.SIZE_16.dp())
+                    top.linkTo(parent.top, Dimensions.SIZE_16.dp())
+                }
+            )
+
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.constrainAs(errorMsg) {
+                    end.linkTo(parent.end, Dimensions.SIZE_16.dp())
+                    start.linkTo(parent.start, Dimensions.SIZE_16.dp())
+                    top.linkTo(title.bottom, Dimensions.SIZE_8.dp())
+                }
+            )
+
+            Button(
+                onClick = { onDismiss() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError
+                ),
+                modifier = Modifier.constrainAs(button) {
+                    top.linkTo(errorMsg.bottom, Dimensions.SIZE_16.dp())
+                    start.linkTo(parent.start, Dimensions.SIZE_16.dp())
+                    end.linkTo(parent.end, Dimensions.SIZE_16.dp())
+                    bottom.linkTo(parent.bottom, Dimensions.SIZE_16.dp())
+                }
+            ) {
+                Text(btnText)
             }
         }
     }

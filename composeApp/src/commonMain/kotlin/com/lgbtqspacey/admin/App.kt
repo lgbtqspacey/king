@@ -45,7 +45,7 @@ fun App() {
                 navigator = navigator,
                 initialRoute = Screens.LOADING,
             ) {
-                scene("/app") {
+                scene(Screens.APP) {
                     App()
                 }
 
@@ -63,12 +63,11 @@ fun App() {
                     }
 
                     if (loaded) {
+                            navigator.navigate(Screens.HOME)
 //                        if (isLoggedIn) {
-//                            navigator.navigate(Screens.HOME)
 //                        } else {
 //                            navigator.navigate(Screens.LOGIN)
 //                        }
-                        navigator.navigate(Screens.HOME)
                     }
                 }
 

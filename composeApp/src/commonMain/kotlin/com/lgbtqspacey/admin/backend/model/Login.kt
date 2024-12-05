@@ -10,6 +10,7 @@ data class Login(
 
 @Serializable
 data class Confirmation(
+    val _id: String,
     val accessLevel: String,
     val name: String,
     val pronouns: String,
