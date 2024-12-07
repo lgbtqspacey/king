@@ -3,8 +3,7 @@ package com.lgbtqspacey.admin.database.api
 import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import com.lgbtqspacey.admin.database.SharedDatabase
 import com.lgbtqspacey.admin.database.model.Settings
-import io.github.aakira.napier.Napier
-import io.sentry.kotlin.multiplatform.Sentry
+import com.lgbtqspacey.admin.helpers.errorHandler
 
 class TableSettings(private val sharedDatabase: SharedDatabase) {
     suspend fun toggleDarkMode(): Boolean {
@@ -15,8 +14,7 @@ class TableSettings(private val sharedDatabase: SharedDatabase) {
             }
             return true
         } catch (exception: Exception) {
-            Napier.e("TableSettings :: toggleDarkMode", exception)
-            Sentry.captureException(exception)
+            errorHandler("TableSettings :: toggleDarkMode", exception)
             return false
         }
     }
@@ -29,8 +27,7 @@ class TableSettings(private val sharedDatabase: SharedDatabase) {
             }
             return true
         } catch (exception: Exception) {
-            Napier.e("TableSettings :: toggleAutoUpdate", exception)
-            Sentry.captureException(exception)
+            errorHandler("TableSettings :: toggleAutoUpdate", exception)
             return false
         }
     }
@@ -47,8 +44,7 @@ class TableSettings(private val sharedDatabase: SharedDatabase) {
                 )
             }
         } catch (exception: Exception) {
-            Napier.e("TableSettings :: getSettings", exception)
-            Sentry.captureException(exception)
+            errorHandler("TableSettings :: getSettings", exception)
         }
 
         return settings
@@ -61,8 +57,7 @@ class TableSettings(private val sharedDatabase: SharedDatabase) {
             }
             return true
         } catch (exception: Exception) {
-            Napier.e("TableSettings :: deleteSettings", exception)
-            Sentry.captureException(exception)
+            errorHandler("TableSettings :: deleteSettings", exception)
             return false
         }
     }

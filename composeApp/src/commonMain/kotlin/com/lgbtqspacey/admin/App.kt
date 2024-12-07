@@ -17,6 +17,10 @@ import com.lgbtqspacey.admin.database.Database
 import com.lgbtqspacey.admin.features.auth.Login
 import com.lgbtqspacey.admin.features.dashboard.Home
 import com.lgbtqspacey.admin.features.dashboard.Settings
+import com.lgbtqspacey.admin.features.people.Profile
+import com.lgbtqspacey.admin.features.people.Reports
+import com.lgbtqspacey.admin.features.people.Roles
+import com.lgbtqspacey.admin.features.people.Users
 import com.lgbtqspacey.admin.helpers.Screens
 import com.lgbtqspacey.admin.ui.theme.AppTheme
 import kotlinx.coroutines.launch
@@ -84,19 +88,19 @@ fun App() {
                 }
 
                 scene(Screens.USERS) {
-                    // todo
+                    Users(navigator)
                 }
 
                 scene(Screens.REPORTS) {
-                    // todo
+                    Reports(navigator)
                 }
 
                 scene(Screens.ROLES) {
-                    // todo
+                    Roles(navigator)
                 }
 
                 scene(Screens.PROFILE) {
-                    // todo
+                    Profile(navigator)
                 }
             }
         }

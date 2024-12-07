@@ -129,7 +129,8 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
         MenuOption(
             text = name,
             icon = Res.drawable.ic_account_circle,
-            onClick = { },
+            onClick = { navigator.navigate(Screens.PROFILE) },
+            enabled = current !== SideBarOption.PROFILE,
             modifier = Modifier.constrainAs(profile) {
                 top.linkTo(parent.top)
                 start.linkTo(profile.start)
@@ -156,7 +157,8 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
         MenuOption(
             text = stringResource(Res.string.colaborators),
             icon = Res.drawable.ic_group,
-            onClick = { },
+            onClick = { navigator.navigate(Screens.USERS) },
+            enabled = current !== SideBarOption.USERS,
             modifier = Modifier.constrainAs(collaborators) {
                 top.linkTo(home.bottom)
             }
@@ -165,7 +167,8 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
         MenuOption(
             text = stringResource(Res.string.roles),
             icon = Res.drawable.ic_tag,
-            onClick = { },
+            onClick = { navigator.navigate(Screens.ROLES) },
+            enabled = current !== SideBarOption.ROLES,
             modifier = Modifier.constrainAs(roles) {
                 top.linkTo(collaborators.bottom)
             }
@@ -174,7 +177,8 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
         MenuOption(
             text = stringResource(Res.string.reports),
             icon = Res.drawable.ic_file,
-            onClick = { },
+            onClick = { navigator.navigate(Screens.REPORTS) },
+            enabled = current !== SideBarOption.REPORTS,
             modifier = Modifier.constrainAs(reports) {
                 top.linkTo(roles.bottom)
             }

@@ -6,4 +6,5 @@ enum class SideBarOption {
     USERS,
     REPORTS,
     ROLES,
+    PROFILE,
 }
