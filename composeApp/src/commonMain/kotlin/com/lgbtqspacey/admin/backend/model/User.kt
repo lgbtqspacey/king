@@ -16,6 +16,12 @@ data class User(
     val createdBy: String?,
     val leftAt: String?,
     val password: String?,
-    val isAdmin: Boolean?,
+    val accessLevel: String?,
 )
 
+data class UserSummary(
+    val id: String,
+    val name: String,
+    val pronouns: String,
+    val roles: String,
+)

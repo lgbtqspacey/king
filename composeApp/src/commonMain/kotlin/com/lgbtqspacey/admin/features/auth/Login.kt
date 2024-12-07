@@ -69,10 +69,9 @@ fun Login(navigator: Navigator) {
     val passwordToggleImage: ImageVector?
     val passwordToggleDescription: String?
 
-    /**
-     * Call login method from backend
-     * @see AuthAdapter
-     */
+    /***********************
+     * Conditional changes *
+     ***********************/
     val tryLogin: () -> Unit = {
         if (password.isEmpty() || username.isEmpty()) {
             coroutineScope.launch {
@@ -95,7 +94,7 @@ fun Login(navigator: Navigator) {
     }
 
     /**
-     * Toggle password visibility
+     * This was extracted from the component to improve readability
      */
     if (isPasswordVisible) {
         passwordVisualTransformation = VisualTransformation.None
@@ -107,9 +106,9 @@ fun Login(navigator: Navigator) {
         passwordToggleDescription = stringResource(Res.string.show_password)
     }
 
-    /**
-     * Screen container
-     */
+    /******
+     * UI *
+     *****/
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -122,9 +121,6 @@ fun Login(navigator: Navigator) {
                 .align(Alignment.TopCenter)
                 .align(Alignment.BottomCenter)
         ) {
-            /**
-             * Login form
-             */
             Text(
                 text = stringResource(Res.string.log_into_account),
                 fontSize = Dimensions.SIZE_32.sp(),
@@ -163,7 +159,7 @@ fun Login(navigator: Navigator) {
             )
 
             /**
-             * Container to display errors
+             * Animated view to display errors but hide them once the user acts
              */
             AnimatedVisibility(
                 visible = showError,
@@ -193,9 +189,6 @@ fun Login(navigator: Navigator) {
                 }
             }
 
-            /**
-             * Login button
-             */
             Button(
                 onClick = {
                     tryLogin()
@@ -207,9 +200,6 @@ fun Login(navigator: Navigator) {
                 Text(stringResource(Res.string.`continue`))
             }
 
-            /**
-             * Foot notes
-             */
             Text(
                 text = stringResource(Res.string.problems_to_log_in),
                 fontSize = Dimensions.SIZE_16.sp(),
@@ -228,9 +218,6 @@ fun Login(navigator: Navigator) {
 
         }
 
-        /**
-         * App version
-         */
         Text(
             text = "v${getPlatform().version}",
             fontSize = Dimensions.SIZE_12.sp(),
