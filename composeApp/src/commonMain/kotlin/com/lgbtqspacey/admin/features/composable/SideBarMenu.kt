@@ -62,7 +62,7 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
     var errorMessage by remember { mutableStateOf("") }
 
     /***********************
-     * Conditional changes
+     * Conditional changes *
      ***********************/
     coroutineScope.launch {
         name = Database().session.getSession().name
@@ -104,7 +104,7 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
     }
 
     /******
-     * UI
+     * UI *
      *****/
     ConstraintLayout(
         modifier = Modifier

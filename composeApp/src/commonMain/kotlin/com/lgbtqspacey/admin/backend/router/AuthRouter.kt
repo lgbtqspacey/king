@@ -1,14 +1,13 @@
 package com.lgbtqspacey.admin.backend.router
 
 import com.lgbtqspacey.admin.backend.model.Login
-import io.github.aakira.napier.Napier
+import com.lgbtqspacey.admin.helpers.errorHandler
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
-import io.sentry.kotlin.multiplatform.Sentry
 
 class AuthRouter {
     companion object {
@@ -24,8 +23,7 @@ class AuthRouter {
                     headers.append(Backend.Headers.SESSION_DEVICE_OS, deviceOs)
                 }
             } catch (exception: Exception) {
-                Napier.e("AuthRouter :: Login", exception)
-                Sentry.captureException(exception)
+                errorHandler("AuthRouter :: Login", exception)
                 return null
             }
         }
@@ -42,8 +40,7 @@ class AuthRouter {
                     headers.append(Backend.Headers.SESSION_USER_ID, sessionUserId)
                 }
             } catch (exception: Exception) {
-                Napier.e("AuthRouter :: Login", exception)
-                Sentry.captureException(exception)
+                errorHandler("AuthRouter :: Login", exception)
                 return null
             }
         }
@@ -58,8 +55,7 @@ class AuthRouter {
                     headers.append(Backend.Headers.SESSION_TOKEN, sessionToken)
                 }
             } catch (exception: Exception) {
-                Napier.e("AuthRouter :: Logout", exception)
-                Sentry.captureException(exception)
+                errorHandler("AuthRouter :: Logout", exception)
                 return null
             }
         }
@@ -74,8 +70,7 @@ class AuthRouter {
                     contentType(ContentType.Application.Json)
                 }
             } catch (exception: Exception) {
-                Napier.e("AuthRouter :: LogoutAllDevices", exception)
-                Sentry.captureException(exception)
+                errorHandler("AuthRouter :: LogoutAllDevices", exception)
                 return null
             }
         }

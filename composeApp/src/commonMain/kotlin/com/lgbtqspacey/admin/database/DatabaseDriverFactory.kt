@@ -8,7 +8,7 @@ expect class DatabaseDriverFactory {
     suspend fun createDriver(): SqlDriver
 }
 
-class SharedDatabase(private val databaseDriverFactory: DatabaseDriverFactory, ) {
+class SharedDatabase(private val databaseDriverFactory: DatabaseDriverFactory) {
     private var database: AppDatabase? = null
 
     private suspend fun initDatabase() {

@@ -5,7 +5,7 @@ import com.lgbtqspacey.admin.backend.model.FilterReports
 import com.lgbtqspacey.admin.backend.model.Report
 import com.lgbtqspacey.admin.backend.model.Role
 import com.lgbtqspacey.admin.backend.model.User
-import io.github.aakira.napier.Napier
+import com.lgbtqspacey.admin.helpers.errorHandler
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
@@ -16,7 +16,6 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
-import io.sentry.kotlin.multiplatform.Sentry
 
 class AdminRouter {
     object Users {
@@ -28,8 +27,7 @@ class AdminRouter {
                     setBody(user)
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: createUser", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: createUser", exception)
                 return null
             }
         }
@@ -42,8 +40,7 @@ class AdminRouter {
                     // todo: add query params
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: getUsers", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: getUsers", exception)
                 return null
             }
         }
@@ -57,8 +54,7 @@ class AdminRouter {
                     setBody(user)
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: updateUser", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: updateUser", exception)
                 return null
             }
         }
@@ -71,8 +67,7 @@ class AdminRouter {
                     contentType(ContentType.Application.Json)
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: deleteUser", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: deleteUser", exception)
                 return null
             }
         }
@@ -87,8 +82,7 @@ class AdminRouter {
                     setBody(role)
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: createRole", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: createRole", exception)
                 return null
             }
         }
@@ -101,8 +95,7 @@ class AdminRouter {
                     // todo: add query params
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: getRoles", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: getRoles", exception)
                 return null
             }
         }
@@ -116,8 +109,7 @@ class AdminRouter {
                     setBody(role)
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: updateRole", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: updateRole", exception)
                 return null
             }
         }
@@ -130,8 +122,7 @@ class AdminRouter {
                     contentType(ContentType.Application.Json)
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: deleteRole", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: deleteRole", exception)
                 return null
             }
         }
@@ -146,8 +137,7 @@ class AdminRouter {
                     setBody(report)
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: createReport", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: createReport", exception)
                 return null
             }
         }
@@ -160,8 +150,7 @@ class AdminRouter {
                     // todo: add query params
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: getReports", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: getReports", exception)
                 return null
             }
         }
@@ -176,8 +165,7 @@ class AdminRouter {
 
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: updateReports", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: updateReports", exception)
                 return null
             }
         }
@@ -190,8 +178,7 @@ class AdminRouter {
                     contentType(ContentType.Application.Json)
                 }
             } catch (exception: Exception) {
-                Napier.e("AdminRouter :: deleteReport", exception)
-                Sentry.captureException(exception)
+                errorHandler("AdminRouter :: deleteReport", exception)
                 return null
             }
         }

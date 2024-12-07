@@ -13,10 +13,9 @@ import com.lgbtqspacey.admin.commonMain.composeResources.user_not_found
 import com.lgbtqspacey.admin.database.Database
 import com.lgbtqspacey.admin.database.model.Session
 import com.lgbtqspacey.admin.getPlatform
-import io.github.aakira.napier.Napier
+import com.lgbtqspacey.admin.helpers.errorHandler
 import io.ktor.client.call.body
 import io.ktor.http.HttpStatusCode
-import io.sentry.kotlin.multiplatform.Sentry
 import org.jetbrains.compose.resources.getString
 
 class AuthAdapter {
@@ -76,8 +75,7 @@ class AuthAdapter {
             }
             return result
         } catch (exception: Exception) {
-            Napier.e("AuthAdapter :: Login", exception)
-            Sentry.captureException(exception)
+            errorHandler("AuthAdapter :: Login", exception)
             return result
         }
     }
@@ -102,8 +100,7 @@ class AuthAdapter {
             }
             return result
         } catch (exception: Exception) {
-            Napier.e("AuthAdapter :: Logout", exception)
-            Sentry.captureException(exception)
+            errorHandler("AuthAdapter :: Logout", exception)
             return result
         }
     }
@@ -128,8 +125,7 @@ class AuthAdapter {
             }
             return result
         } catch (exception: Exception) {
-            Napier.e("AuthAdapter :: LogoutAllDevices", exception)
-            Sentry.captureException(exception)
+            errorHandler("AuthAdapter :: LogoutAllDevices", exception)
             return result
         }
     }
@@ -145,8 +141,7 @@ class AuthAdapter {
                 return null
             }
         } catch (exception: Exception) {
-            Napier.e("AuthAdapter :: Login :: Confirmation", exception)
-            Sentry.captureException(exception)
+            errorHandler("AuthAdapter :: Login :: Confirmation", exception)
         }
         return result
     }

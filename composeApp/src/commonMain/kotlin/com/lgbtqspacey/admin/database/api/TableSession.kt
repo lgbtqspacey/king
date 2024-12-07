@@ -3,8 +3,7 @@ package com.lgbtqspacey.admin.database.api
 import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import com.lgbtqspacey.admin.database.SharedDatabase
 import com.lgbtqspacey.admin.database.model.Session
-import io.github.aakira.napier.Napier
-import io.sentry.kotlin.multiplatform.Sentry
+import com.lgbtqspacey.admin.helpers.errorHandler
 
 class TableSession(private val sharedDatabase: SharedDatabase) {
     suspend fun createSession(session: Session): Boolean {
@@ -19,8 +18,7 @@ class TableSession(private val sharedDatabase: SharedDatabase) {
             }
             return true
         } catch (exception: Exception) {
-            Napier.e("TableSession :: createSession", exception)
-            Sentry.captureException(exception)
+            errorHandler("TableSession :: createSession", exception)
             return false
         }
     }
@@ -37,8 +35,7 @@ class TableSession(private val sharedDatabase: SharedDatabase) {
             }
             return true
         } catch (exception: Exception) {
-            Napier.e("TableSession :: setUserInfo", exception)
-            Sentry.captureException(exception)
+            errorHandler("TableSession :: setUserInfo", exception)
             return false
         }
     }
@@ -59,8 +56,7 @@ class TableSession(private val sharedDatabase: SharedDatabase) {
             }
             println("get: $session")
         } catch (exception: Exception) {
-            Napier.e("TableSession :: getSession", exception)
-            Sentry.captureException(exception)
+            errorHandler("TableSession :: getSession", exception)
         }
 
         return session
@@ -73,8 +69,7 @@ class TableSession(private val sharedDatabase: SharedDatabase) {
             }
             return true
         } catch (exception: Exception) {
-            Napier.e("TableSession :: deleteSession", exception)
-            Sentry.captureException(exception)
+            errorHandler("TableSession :: deleteSession", exception)
             return false
         }
     }

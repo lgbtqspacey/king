@@ -8,8 +8,16 @@ CREATE TABLE IF NOT EXISTS Session(
     pronouns TEXT
 );
 
-INSERT OR REPLACE INTO Session(id)
-VALUES (1);
+INSERT OR REPLACE INTO Session(
+    id,
+    token,
+    expiration,
+    userId,
+    name,
+    accessLevel,
+    pronouns
+)
+VALUES (1, "", "", "", "", "", "");
 
 insertSession:
 UPDATE Session
