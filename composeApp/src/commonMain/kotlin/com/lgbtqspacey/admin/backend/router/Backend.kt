@@ -65,4 +65,16 @@ class Backend {
         const val SESSION_USER_ID = "sessionUserId"
         const val SESSION_DEVICE_OS = "sessionDeviceOS"
     }
+
+    object Query {
+        const val ID = "id"
+        const val USERNAME = "username"
+        const val EMAIL = "email"
+        const val DISCORD_ID = "discordId"
+        const val PAGE = "page"
+        const val LIMIT = "limit"
+        const val USER_ID = "userId"
+        const val TO = "to"
+        const val FROM = "from"
+    }
 }

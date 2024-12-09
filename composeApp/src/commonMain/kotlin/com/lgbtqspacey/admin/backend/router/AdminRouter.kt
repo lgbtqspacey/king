@@ -1,7 +1,8 @@
 package com.lgbtqspacey.admin.backend.router
 
-import com.lgbtqspacey.admin.backend.model.Filter
+import com.lgbtqspacey.admin.backend.model.FilterDefault
 import com.lgbtqspacey.admin.backend.model.FilterReports
+import com.lgbtqspacey.admin.backend.model.FilterUser
 import com.lgbtqspacey.admin.backend.model.Report
 import com.lgbtqspacey.admin.backend.model.Role
 import com.lgbtqspacey.admin.backend.model.User
@@ -32,12 +33,27 @@ class AdminRouter {
             }
         }
 
-        suspend fun getUsers(filter: Filter, session: String): HttpResponse? {
+        suspend fun getUsers(filter: FilterUser, session: String): HttpResponse? {
             try {
                 return Backend.CLIENT.delete(Backend.Routes.Admin.USERS) {
                     headers.append(Backend.Headers.SESSION_TOKEN, session)
                     contentType(ContentType.Application.Json)
-                    // todo: add query params
+
+                    val isValidPage = filter.page !== null && filter.page > 0
+                    val isValidLimit = filter.limit !== null && filter.limit > 0
+
+                    if (isValidPage)
+                        url.parameters.append(Backend.Query.PAGE, filter.page.toString())
+                    if (isValidLimit)
+                        url.parameters.append(Backend.Query.LIMIT, filter.limit.toString())
+                    if (!filter.id.isNullOrEmpty())
+                        url.parameters.append(Backend.Query.ID, filter.id)
+                    if (!filter.email.isNullOrEmpty())
+                        url.parameters.append(Backend.Query.EMAIL, filter.email)
+                    if (!filter.discordId.isNullOrEmpty())
+                        url.parameters.append(Backend.Query.DISCORD_ID, filter.discordId)
+                    if (!filter.username.isNullOrEmpty())
+                        url.parameters.append(Backend.Query.USERNAME, filter.username)
                 }
             } catch (exception: Exception) {
                 errorHandler("AdminRouter :: getUsers", exception)
@@ -87,12 +103,19 @@ class AdminRouter {
             }
         }
 
-        suspend fun getRoles(filter: Filter, session: String): HttpResponse? {
+        suspend fun getRoles(filter: FilterDefault, session: String): HttpResponse? {
             try {
                 return Backend.CLIENT.get(Backend.Routes.Admin.ROLES) {
                     headers.append(Backend.Headers.SESSION_TOKEN, session)
                     contentType(ContentType.Application.Json)
-                    // todo: add query params
+
+                    val isValidPage = filter.page !== null && filter.page > 0
+                    val isValidLimit = filter.limit !== null && filter.limit > 0
+
+                    if (isValidPage)
+                        url.parameters.append(Backend.Query.PAGE, filter.page.toString())
+                    if (isValidLimit)
+                        url.parameters.append(Backend.Query.LIMIT, filter.limit.toString())
                 }
             } catch (exception: Exception) {
                 errorHandler("AdminRouter :: getRoles", exception)
@@ -142,12 +165,24 @@ class AdminRouter {
             }
         }
 
-        suspend fun getReports(filterReports: FilterReports, session: String): HttpResponse? {
+        suspend fun getReports(filter: FilterReports, session: String): HttpResponse? {
             try {
                 return Backend.CLIENT.get(Backend.Routes.Admin.REPORTS) {
                     headers.append(Backend.Headers.SESSION_TOKEN, session)
                     contentType(ContentType.Application.Json)
-                    // todo: add query params
+                    url.parameters.append(Backend.Query.USER_ID, filter.userId)
+
+                    val isValidPage = filter.page !== null && filter.page > 0
+                    val isValidLimit = filter.limit !== null && filter.limit > 0
+
+                    if (isValidPage)
+                        url.parameters.append(Backend.Query.PAGE, filter.page.toString())
+                    if (isValidLimit)
+                        url.parameters.append(Backend.Query.LIMIT, filter.limit.toString())
+                    if (!filter.to.isNullOrEmpty())
+                        url.parameters.append(Backend.Query.TO, filter.to)
+                    if (!filter.from.isNullOrEmpty())
+                        url.parameters.append(Backend.Query.FROM, filter.from)
                 }
             } catch (exception: Exception) {
                 errorHandler("AdminRouter :: getReports", exception)

@@ -8,7 +8,13 @@ data class CreateItemResponse(
 )
 
 @Serializable
-data class Filter(
+data class FilterDefault(
+    val page: Int?,
+    val limit: Int?,
+)
+
+@Serializable
+data class FilterUser(
     val id: String?,
     val email: String?,
     val discordId: String?,
