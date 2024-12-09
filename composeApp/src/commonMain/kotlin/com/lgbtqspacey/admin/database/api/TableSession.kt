@@ -1,6 +1,6 @@
 package com.lgbtqspacey.admin.database.api
 
-import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
+import app.cash.sqldelight.async.coroutines.awaitAsOne
 import com.lgbtqspacey.admin.database.SharedDatabase
 import com.lgbtqspacey.admin.database.model.Session
 import com.lgbtqspacey.admin.helpers.errorHandler
@@ -8,9 +8,8 @@ import com.lgbtqspacey.admin.helpers.errorHandler
 class TableSession(private val sharedDatabase: SharedDatabase) {
     suspend fun createSession(session: Session): Boolean {
         try {
-            println("set token $session")
             sharedDatabase { db ->
-                db.sessionQueries.insertSession(
+                db.sessionQueries.updateToken(
                     token = session.token,
                     expiration = session.expiration,
                     userId = session.userId,
@@ -25,9 +24,8 @@ class TableSession(private val sharedDatabase: SharedDatabase) {
 
     suspend fun setUserInfo(session: Session): Boolean {
         try {
-            println("set info: $session")
             sharedDatabase { db ->
-                db.sessionQueries.insertUserInfo(
+                db.sessionQueries.updateUserInfo(
                     name = session.name,
                     accessLevel = session.accessLevel,
                     pronouns = session.pronouns,
@@ -44,17 +42,16 @@ class TableSession(private val sharedDatabase: SharedDatabase) {
         var session = Session()
         try {
             sharedDatabase { db ->
-                val data = db.sessionQueries.getSession().awaitAsOneOrNull()
+                val data = db.sessionQueries.getSession().awaitAsOne()
                 session = Session(
-                    token = data?.token ?: "",
-                    expiration = data?.expiration ?: "",
-                    userId = data?.userId ?: "",
-                    name = data?.name ?: "",
-                    accessLevel = data?.accessLevel ?: "",
-                    pronouns = data?.pronouns ?: "",
+                    token = data.token!!,
+                    expiration = data.expiration!!,
+                    userId = data.userId!!,
+                    name = data.name!!,
+                    accessLevel = data.accessLevel!!,
+                    pronouns = data.pronouns!!,
                 )
             }
-            println("get: $session")
         } catch (exception: Exception) {
             errorHandler("TableSession :: getSession", exception)
         }

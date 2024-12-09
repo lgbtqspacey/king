@@ -19,12 +19,12 @@ INSERT OR REPLACE INTO Session(
 )
 VALUES (1, "", "", "", "", "", "");
 
-insertSession:
+updateToken:
 UPDATE Session
 SET token = ?, expiration = ?, userId = ?
 WHERE id = 1;
 
-insertUserInfo:
+updateUserInfo:
 UPDATE Session
 SET name = ?, accessLevel = ?, pronouns = ?
 WHERE id = 1;

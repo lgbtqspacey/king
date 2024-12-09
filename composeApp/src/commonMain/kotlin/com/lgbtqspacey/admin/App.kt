@@ -67,11 +67,11 @@ fun App() {
                     }
 
                     if (loaded) {
+                        if (isLoggedIn) {
                             navigator.navigate(Screens.HOME)
-//                        if (isLoggedIn) {
-//                        } else {
-//                            navigator.navigate(Screens.LOGIN)
-//                        }
+                        } else {
+                            navigator.navigate(Screens.LOGIN)
+                        }
                     }
                 }
 
