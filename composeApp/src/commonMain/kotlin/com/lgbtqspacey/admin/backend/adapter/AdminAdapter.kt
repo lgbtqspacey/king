@@ -58,9 +58,38 @@ class AdminAdapter {
         return result
     }
 
-    suspend fun getUsers(filter: FilterUser): ApiResult? {
+    suspend fun getUsers(filter: FilterUser): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
-        return null
+
+        try {
+            val session = sessionDB.getSession().token
+            val response = AdminRouter.Users.getUsers(filter, session)
+
+            when (response?.status) {
+                HttpStatusCode.OK -> {
+                    result = ApiResult(
+                        isSuccess = true,
+                        data = response.body()
+                    )
+                }
+
+                HttpStatusCode.BadRequest -> {
+                    result = ApiResult(
+                        isSuccess = false,
+                        errorCode = response.status.value,
+                        errorMessage = response.bodyAsText()
+                    )
+                }
+
+                else -> {
+                    return result
+                }
+            }
+        } catch (exception: Exception) {
+            errorHandler("AdminAdapter :: getUsers", exception)
+            return result
+        }
+        return result
     }
 
     suspend fun updateUser(userId: String, user: User): ApiResult {
@@ -167,9 +196,38 @@ class AdminAdapter {
         return result
     }
 
-    suspend fun getRoles(filter: FilterDefault): ApiResult? {
+    suspend fun getRoles(filter: FilterDefault): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
-        return null
+
+        try {
+            val session = sessionDB.getSession().token
+            val response = AdminRouter.Roles.getRoles(filter, session)
+
+            when (response?.status) {
+                HttpStatusCode.OK -> {
+                    result = ApiResult(
+                        isSuccess = true,
+                        data = response.body()
+                    )
+                }
+
+                HttpStatusCode.BadRequest -> {
+                    result = ApiResult(
+                        isSuccess = false,
+                        errorCode = response.status.value,
+                        errorMessage = response.bodyAsText()
+                    )
+                }
+
+                else -> {
+                    return result
+                }
+            }
+        } catch (exception: Exception) {
+            errorHandler("AdminAdapter :: getRoles", exception)
+            return result
+        }
+        return result
     }
 
     suspend fun updateRole(roleId: String, role: Role): ApiResult {
@@ -276,9 +334,38 @@ class AdminAdapter {
         return result
     }
 
-    suspend fun getReports(filter: FilterReports): ApiResult? {
+    suspend fun getReports(filter: FilterReports): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
-        return null
+
+        try {
+            val session = sessionDB.getSession().token
+            val response = AdminRouter.Reports.getReports(filter, session)
+
+            when (response?.status) {
+                HttpStatusCode.OK -> {
+                    result = ApiResult(
+                        isSuccess = true,
+                        data = response.body()
+                    )
+                }
+
+                HttpStatusCode.BadRequest -> {
+                    result = ApiResult(
+                        isSuccess = false,
+                        errorCode = response.status.value,
+                        errorMessage = response.bodyAsText()
+                    )
+                }
+
+                else -> {
+                    return result
+                }
+            }
+        } catch (exception: Exception) {
+            errorHandler("AdminAdapter :: getReports", exception)
+            return result
+        }
+        return result
     }
 
     suspend fun updateReport(reportId: String, report: Report): ApiResult {
