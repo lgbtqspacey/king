@@ -13,7 +13,7 @@ class SessionDao {
         const val SESSION_USER_ID = "session_user_id"
     }
 
-    fun insertSession(session: Session): Boolean {
+    fun createOrUpdateSession(session: Session): Boolean {
         try {
             db.insertData(SESSION_TOKEN, session.token)
             db.insertData(SESSION_EXPIRATION, session.expiration)

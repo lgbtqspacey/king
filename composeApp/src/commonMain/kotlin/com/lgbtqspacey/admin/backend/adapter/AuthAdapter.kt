@@ -39,7 +39,7 @@ class AuthAdapter {
                         return result
                     } else {
                         val session = Session(token, expiration, userId)
-                        val writeToDatabase = sessionDao.insertSession(session)
+                        val writeToDatabase = sessionDao.createOrUpdateSession(session)
 
                         if (writeToDatabase) {
                             val confirmation = sendConfirmation(token, userId)
@@ -51,7 +51,7 @@ class AuthAdapter {
                                     accessLevel = confirmation.accessLevel,
                                     pronouns = confirmation.pronouns,
                                 )
-                                userDao.insertUser(userInfo)
+                                userDao.createOrUpdateUser(userInfo)
                                 result = ApiResult(true)
                             }
                         } else {

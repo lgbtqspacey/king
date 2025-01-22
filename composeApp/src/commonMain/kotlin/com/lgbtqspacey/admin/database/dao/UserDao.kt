@@ -13,7 +13,7 @@ class UserDao {
         const val USER_PRONOUNS = "user_pronouns"
     }
 
-    fun insertUser(user: User): Boolean {
+    fun createOrUpdateUser(user: User): Boolean {
         try {
             db.insertData(USER_NAME, user.name)
             db.insertData(USER_ACCESS_LEVEL, user.accessLevel)
