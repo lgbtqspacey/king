@@ -40,7 +40,7 @@ import com.lgbtqspacey.admin.commonMain.composeResources.no_back
 import com.lgbtqspacey.admin.commonMain.composeResources.reports
 import com.lgbtqspacey.admin.commonMain.composeResources.roles
 import com.lgbtqspacey.admin.commonMain.composeResources.settings
-import com.lgbtqspacey.admin.database.Database
+import com.lgbtqspacey.admin.database.dao.UserDao
 import com.lgbtqspacey.admin.getPlatform
 import com.lgbtqspacey.admin.helpers.Dimensions
 import com.lgbtqspacey.admin.helpers.Screens
@@ -65,7 +65,7 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
      * Conditional changes *
      ***********************/
     coroutineScope.launch {
-        name = Database().session.getSession().name
+        name = UserDao().getUser().name
     }
 
     if (showConfirmLogout) {

@@ -11,7 +11,7 @@ import com.lgbtqspacey.admin.backend.model.User
 import com.lgbtqspacey.admin.backend.router.AdminRouter
 import com.lgbtqspacey.admin.commonMain.composeResources.Res
 import com.lgbtqspacey.admin.commonMain.composeResources.something_went_wrong
-import com.lgbtqspacey.admin.database.Database
+import com.lgbtqspacey.admin.database.dao.SessionDao
 import com.lgbtqspacey.admin.helpers.errorHandler
 import io.ktor.client.call.body
 import io.ktor.client.statement.bodyAsText
@@ -19,13 +19,13 @@ import io.ktor.http.HttpStatusCode
 import org.jetbrains.compose.resources.getString
 
 class AdminAdapter {
-    private val sessionDB = Database().session
+    private val sessionDao = SessionDao()
 
     suspend fun createUser(user: User): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Users.createUser(user, session)
 
             when (response?.status) {
@@ -62,7 +62,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Users.getUsers(filter, session)
 
             when (response?.status) {
@@ -96,7 +96,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Users.updateUser(userId, user, session)
 
             when (response?.status) {
@@ -131,7 +131,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Users.deleteUser(userId, session)
 
             when (response?.status) {
@@ -163,7 +163,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Roles.createRole(role, session)
 
             when (response?.status) {
@@ -200,7 +200,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Roles.getRoles(filter, session)
 
             when (response?.status) {
@@ -234,7 +234,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Roles.updateRole(roleId, role, session)
 
             when (response?.status) {
@@ -269,7 +269,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Roles.deleteRole(roleId, session)
 
             when (response?.status) {
@@ -301,7 +301,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Reports.createReport(report, session)
 
             when (response?.status) {
@@ -338,7 +338,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Reports.getReports(filter, session)
 
             when (response?.status) {
@@ -372,7 +372,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Reports.updateReport(reportId, report, session)
 
             when (response?.status) {
@@ -407,7 +407,7 @@ class AdminAdapter {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
-            val session = sessionDB.getSession().token
+            val session = sessionDao.getSession().token
             val response = AdminRouter.Reports.deleteReport(reportId, session)
 
             when (response?.status) {
