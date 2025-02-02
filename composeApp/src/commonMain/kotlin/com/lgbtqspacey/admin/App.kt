@@ -13,7 +13,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.lgbtqspacey.admin.database.Database
+import com.lgbtqspacey.admin.database.dao.SessionDao
+import com.lgbtqspacey.admin.database.dao.SettingsDao
 import com.lgbtqspacey.admin.features.auth.Login
 import com.lgbtqspacey.admin.features.dashboard.Home
 import com.lgbtqspacey.admin.features.dashboard.Settings
@@ -36,9 +37,11 @@ fun App() {
     val isDarkMode = remember { mutableStateOf(false) }
 
     coroutineScope.launch {
-        val session = Database().session.getSession()
-        isDarkMode.value = Database().settings.getSettings().isDarkMode
-        isLoggedIn = session.token.isNotEmpty()
+        val sessionToken = SessionDao().getSession().token
+
+        isDarkMode.value = SettingsDao().getSettings().isDarkMode
+        isLoggedIn = sessionToken.isNotEmpty()
+
         loaded = true
     }
 
@@ -67,7 +70,7 @@ fun App() {
                     }
 
                     if (loaded) {
-                        if (isLoggedIn) {
+                        if (!isLoggedIn) {
                             navigator.navigate(Screens.HOME)
                         } else {
                             navigator.navigate(Screens.LOGIN)
