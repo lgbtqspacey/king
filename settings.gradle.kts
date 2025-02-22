@@ -1,4 +1,4 @@
-rootProject.name = "admin-portal"
+rootProject.name = "king"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
