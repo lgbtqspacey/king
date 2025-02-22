@@ -9,7 +9,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.sentry.plugin)
 }
 
@@ -37,7 +36,6 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.material3.desktop)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.bundles.ktor.common)
             implementation(libs.napier)
@@ -53,11 +51,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.lgbtqspacey.admin"
+    namespace = "com.lgbtqspacey.king"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.lgbtqspacey.admin"
+        applicationId = "com.lgbtqspacey.king"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -85,13 +83,12 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "com.lgbtqspacey.admin.MainKt"
+        mainClass = "com.lgbtqspacey.king.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Exe)
-            packageName = "lgbtqspaceyAdmin"
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "King"
             packageVersion = "1.0.0"
-            modules("java.instrument", "java.management", "java.sql", "jdk.unsupported")
             windows {
                 iconFile.set(project.file("$rootDir/icon.ico"))
                 console = true
@@ -102,7 +99,7 @@ compose.desktop {
 
 compose.resources {
     publicResClass = false
-    packageOfResClass = "com.lgbtqspacey.admin.commonMain.composeResources"
+    packageOfResClass = "com.lgbtqspacey.king.commonMain.composeResources"
     generateResClass = auto
 }
 
