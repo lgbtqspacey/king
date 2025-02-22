@@ -1,6 +1,6 @@
 package com.lgbtqspacey.king.ui.theme
 
-import androidx.compose.material.Typography
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -18,28 +18,28 @@ fun getFont(): FontFamily {
 @Composable
 fun getTypography(): Typography {
     return Typography(
-        body1 = TextStyle(
+        bodyMedium = TextStyle(
             fontFamily = getFont(),
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
             lineHeight = 24.sp,
             letterSpacing = 0.5.sp
         ),
-        h2 = TextStyle(
+        titleLarge = TextStyle(
             fontFamily = getFont(),
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
             lineHeight = 28.sp,
             letterSpacing = 0.sp
         ),
-        h3 = TextStyle(
+        labelSmall = TextStyle(
             fontFamily = getFont(),
             fontWeight = FontWeight.Normal,
             fontSize = 11.sp,
             lineHeight = 16.sp,
             letterSpacing = 0.5.sp
         ),
-        h1 = TextStyle(
+        headlineLarge = TextStyle(
             fontFamily = getFont(),
             fontWeight = FontWeight.ExtraBold,
             fontSize = 32.sp,

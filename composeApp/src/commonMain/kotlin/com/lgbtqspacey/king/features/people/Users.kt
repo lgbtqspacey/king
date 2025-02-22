@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,7 +65,7 @@ fun Users(navigator: Navigator) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colors.background),
+            .background(MaterialTheme.colorScheme.background),
     ) {
         val (
             menu,
@@ -107,7 +107,8 @@ fun Users(navigator: Navigator) {
                 }
         ) {
             CircularProgressIndicator(
-                color = MaterialTheme.colors.secondary,
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         }
 
@@ -130,7 +131,7 @@ fun Users(navigator: Navigator) {
             ) {
                 item {
                     Row(modifier = Modifier
-                        .background(MaterialTheme.colors.onBackground)
+                        .background(MaterialTheme.colorScheme.outline)
                         .constrainAs(index) {
                             start.linkTo(menu.end, Dimensions.SIZE_16.dp())
                         }
@@ -167,9 +168,9 @@ fun RowScope.TableCell(text: String) {
 
     Text(
         text = text,
-        color = MaterialTheme.colors.onBackground,
+        color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
-            .border(1.dp, MaterialTheme.colors.onBackground)
+            .border(1.dp, MaterialTheme.colorScheme.onBackground)
             .weight(columnWeight)
             .padding(Dimensions.SIZE_8.dp())
     )

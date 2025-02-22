@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -108,7 +108,7 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
      *****/
     ConstraintLayout(
         modifier = Modifier
-            .background(MaterialTheme.colors.surface)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .fillMaxHeight()
             .wrapContentWidth()
             .widthIn(max = Dimensions.SIZE_192.dp())
@@ -137,7 +137,7 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
             }
         )
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.constrainAs(dividerTop) {
                 top.linkTo(profile.bottom)
                 end.linkTo(parent.end)
@@ -184,7 +184,7 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
             }
         )
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.constrainAs(dividerBottom) {
                 bottom.linkTo(settings.top)
                 end.linkTo(settings.end)
@@ -215,7 +215,7 @@ fun SideBarMenu(current: SideBarOption, navigator: Navigator) {
         Text(
             text = "v${getPlatform().version}",
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.onSurface,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = Dimensions.SIZE_8.sp(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -243,14 +243,14 @@ private fun MenuOption(
         Icon(
             imageVector = vectorResource(icon),
             contentDescription = text,
-            tint = MaterialTheme.colors.onSurface
+            tint = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = text,
             modifier = Modifier
                 .padding(start = Dimensions.SIZE_8.dp())
                 .fillMaxWidth(),
-            color = MaterialTheme.colors.onSurface
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

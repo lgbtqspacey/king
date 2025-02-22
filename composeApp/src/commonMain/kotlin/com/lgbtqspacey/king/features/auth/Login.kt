@@ -10,13 +10,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -113,7 +113,7 @@ fun Login(navigator: Navigator) {
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colors.background),
+            .background(MaterialTheme.colorScheme.background),
     ) {
         Column(
             modifier = Modifier
@@ -124,7 +124,7 @@ fun Login(navigator: Navigator) {
             Text(
                 text = stringResource(Res.string.log_into_account),
                 fontSize = Dimensions.SIZE_32.sp(),
-                color = MaterialTheme.colors.onBackground,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
 
@@ -137,7 +137,7 @@ fun Login(navigator: Navigator) {
                 singleLine = true,
                 label = { Text(stringResource(Res.string.username)) },
                 modifier = Modifier.padding(top = Dimensions.SIZE_16.dp()),
-                colors = TextFieldDefaults.textFieldColors(MaterialTheme.colors.primary)
+                colors = TextFieldDefaults.colors(MaterialTheme.colorScheme.primary)
             )
 
             OutlinedTextField(
@@ -150,7 +150,7 @@ fun Login(navigator: Navigator) {
                 label = { Text(stringResource(Res.string.password)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 visualTransformation = passwordVisualTransformation,
-                colors = TextFieldDefaults.textFieldColors(MaterialTheme.colors.primary),
+                colors = TextFieldDefaults.colors(MaterialTheme.colorScheme.primary),
                 trailingIcon = {
                     IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                         Icon(passwordToggleImage, passwordToggleDescription)
@@ -173,7 +173,7 @@ fun Login(navigator: Navigator) {
                     Text(
                         text = errorMessage,
                         fontSize = Dimensions.SIZE_12.sp(),
-                        color = MaterialTheme.colors.error,
+                        color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally),
@@ -182,7 +182,7 @@ fun Login(navigator: Navigator) {
                         text = errorCode,
                         fontSize = Dimensions.SIZE_12.sp(),
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colors.onError,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally),
                     )
@@ -203,7 +203,7 @@ fun Login(navigator: Navigator) {
             Text(
                 text = stringResource(Res.string.problems_to_log_in),
                 fontSize = Dimensions.SIZE_16.sp(),
-                color = MaterialTheme.colors.onBackground,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .padding(top = Dimensions.SIZE_16.dp())
                     .align(Alignment.CenterHorizontally)
@@ -211,7 +211,7 @@ fun Login(navigator: Navigator) {
             Text(
                 text = stringResource(Res.string.open_a_ticket),
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onBackground,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.Companion
                     .align(Alignment.CenterHorizontally)
             )
@@ -221,7 +221,7 @@ fun Login(navigator: Navigator) {
         Text(
             text = "v${getPlatform().version}",
             fontSize = Dimensions.SIZE_12.sp(),
-            color = MaterialTheme.colors.onBackground,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
