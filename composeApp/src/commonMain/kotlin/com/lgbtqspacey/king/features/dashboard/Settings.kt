@@ -41,7 +41,7 @@ fun Settings(navigator: Navigator) {
 
         Button(onClick = {
             coroutineScope.launch {
-                Preferences().insertData("teste", "value")
+                Preferences().deleteData("teste")
             }
         },
             modifier = Modifier.constrainAs(toggleDarkModeLabel) {

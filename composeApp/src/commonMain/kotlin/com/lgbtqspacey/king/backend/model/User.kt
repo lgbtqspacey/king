@@ -23,5 +23,5 @@ data class UserSummary(
     val id: String,
     val name: String,
     val pronouns: String,
-    val roles: String,
+    val accessLevel: String,
 )

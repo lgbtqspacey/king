@@ -2,10 +2,7 @@ package com.lgbtqspacey.king.features.people
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,12 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.lgbtqspacey.king.backend.model.UserSummary
 import com.lgbtqspacey.king.commonMain.composeResources.Res
 import com.lgbtqspacey.king.commonMain.composeResources.colaborators
 import com.lgbtqspacey.king.features.composable.SideBarMenu
+import com.lgbtqspacey.king.features.composable.UserList
 import com.lgbtqspacey.king.helpers.Dimensions
 import com.lgbtqspacey.king.helpers.SideBarOption
 import kotlinx.coroutines.launch
@@ -37,18 +34,18 @@ fun Users(navigator: Navigator) {
     val coroutineScope = rememberCoroutineScope()
 
     var isLoaded by remember { mutableStateOf(false) }
-    var userList = mutableListOf<UserSummary>(
+    var userList = mutableListOf(
         UserSummary(
             id = "1234",
-            name = "teste",
-            pronouns = "ele",
-            roles = "admin"
+            name = "12345678901234567890",
+            pronouns = "123456",
+            accessLevel = "123456"
         ),
         UserSummary(
             id = "4567",
-            name = "as",
+            name = "asaaaaaaaaaaaaaaaaaa",
             pronouns = "ela",
-            roles = "ti"
+            accessLevel = "editor"
         )
     )
 
@@ -72,9 +69,6 @@ fun Users(navigator: Navigator) {
             button,
             loading,
             listContainer,
-            list,
-            index,
-            rows,
         ) = createRefs()
 
         Box(modifier = Modifier.constrainAs(menu) {
@@ -112,71 +106,17 @@ fun Users(navigator: Navigator) {
             )
         }
 
-        /**
-         * Animated view to show the data once it's loaded
-         */
-        AnimatedVisibility(
-            visible = isLoaded,
+        LazyColumn(
             modifier = Modifier
+                .padding(end = Dimensions.SIZE_16.dp())
                 .constrainAs(listContainer) {
-                    start.linkTo(menu.end, Dimensions.SIZE_16.dp())
-                    end.linkTo(parent.end)
+                    start.linkTo(button.start)
                     top.linkTo(button.bottom, Dimensions.SIZE_16.dp())
-                }
-        ) {
-            LazyColumn(
-                modifier = Modifier.constrainAs(list) {
-                    bottom.linkTo(parent.bottom, Dimensions.SIZE_16.dp())
-                }
-            ) {
-                item {
-                    Row(modifier = Modifier
-                        .background(MaterialTheme.colorScheme.outline)
-                        .constrainAs(index) {
-                            start.linkTo(menu.end, Dimensions.SIZE_16.dp())
-                        }
-                    ) {
-                        TableCell("ID")
-                        TableCell("Nome")
-                        TableCell("Pronomes")
-                        TableCell("Cargos")
-                    }
-                }
-
-
-                items(userList.count()) {
-                    val user = userList[it]
-
-                    Row(Modifier.constrainAs(rows) {
-                        start.linkTo(index.start)
-                        end.linkTo(index.end)
-                    }) {
-                        TableCell(user.id)
-                        TableCell(user.name)
-                        TableCell(user.pronouns)
-                        TableCell(user.roles)
-                    }
-                }
+                }) {
+            items(userList.size) { user ->
+                UserList(navigator, userList[user])
             }
         }
     }
 }
 
-@Composable
-fun RowScope.TableCell(text: String) {
-    val columnWeight = .2f // 20%
-
-    Text(
-        text = text,
-        color = MaterialTheme.colorScheme.onBackground,
-        modifier = Modifier
-            .border(1.dp, MaterialTheme.colorScheme.onBackground)
-            .weight(columnWeight)
-            .padding(Dimensions.SIZE_8.dp())
-    )
-}
-
-@Composable
-fun RowScope.TableButton(text: String, onClick: () -> Unit) {
-    // todo
-}

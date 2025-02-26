@@ -10,7 +10,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        getPlatform().initSentry(getPlatform().name, getPlatform().version)
+        getPlatform().initSentry(getPlatform().version)
         Napier.base(DebugAntilog())
 
         setContent {
