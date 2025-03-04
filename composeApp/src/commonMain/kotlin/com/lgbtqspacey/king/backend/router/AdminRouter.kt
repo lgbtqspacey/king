@@ -33,27 +33,27 @@ class AdminRouter {
             }
         }
 
-        suspend fun getUsers(filter: FilterUser, session: String): HttpResponse? {
+        suspend fun getUsers(filter: FilterUser? = null, session: String): HttpResponse? {
             try {
-                return Backend.CLIENT.delete(Backend.Routes.Admin.USERS) {
+                return Backend.CLIENT.get(Backend.Routes.Admin.USERS) {
                     headers.append(Backend.Headers.SESSION_TOKEN, session)
                     contentType(ContentType.Application.Json)
 
-                    val isValidPage = filter.page !== null && filter.page > 0
-                    val isValidLimit = filter.limit !== null && filter.limit > 0
+                    val isValidPage = filter?.page !== null && filter.page > 0
+                    val isValidLimit = filter?.limit !== null && filter.limit > 0
 
                     if (isValidPage)
-                        url.parameters.append(Backend.Query.PAGE, filter.page.toString())
+                        url.parameters.append(Backend.Query.PAGE, filter?.page.toString())
                     if (isValidLimit)
-                        url.parameters.append(Backend.Query.LIMIT, filter.limit.toString())
-                    if (!filter.id.isNullOrEmpty())
-                        url.parameters.append(Backend.Query.ID, filter.id)
-                    if (!filter.email.isNullOrEmpty())
-                        url.parameters.append(Backend.Query.EMAIL, filter.email)
-                    if (!filter.discordId.isNullOrEmpty())
-                        url.parameters.append(Backend.Query.DISCORD_ID, filter.discordId)
-                    if (!filter.username.isNullOrEmpty())
-                        url.parameters.append(Backend.Query.USERNAME, filter.username)
+                        url.parameters.append(Backend.Query.LIMIT, filter?.limit.toString())
+                    if (!filter?.id.isNullOrEmpty())
+                        url.parameters.append(Backend.Query.ID, filter?.id!!)
+                    if (!filter?.email.isNullOrEmpty())
+                        url.parameters.append(Backend.Query.EMAIL, filter?.email!!)
+                    if (!filter?.discordId.isNullOrEmpty())
+                        url.parameters.append(Backend.Query.DISCORD_ID, filter?.discordId!!)
+                    if (!filter?.username.isNullOrEmpty())
+                        url.parameters.append(Backend.Query.USERNAME, filter?.username!!)
                 }
             } catch (exception: Exception) {
                 errorHandler("AdminRouter :: getUsers", exception)

@@ -33,7 +33,7 @@ class AdminAdapter {
                     val createdId = response.body<CreateItemResponse>().id
                     result = ApiResult(
                         isSuccess = true,
-                        data = hashMapOf(Pair("id", createdId))
+                        response = hashMapOf(Pair("id", createdId))
                     )
                 }
 
@@ -58,7 +58,7 @@ class AdminAdapter {
         return result
     }
 
-    suspend fun getUsers(filter: FilterUser): ApiResult {
+    suspend fun getUsers(filter: FilterUser? = null): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
         try {
@@ -69,7 +69,7 @@ class AdminAdapter {
                 HttpStatusCode.OK -> {
                     result = ApiResult(
                         isSuccess = true,
-                        data = response.body()
+                        responseDetails = response.body()
                     )
                 }
 
@@ -103,7 +103,7 @@ class AdminAdapter {
                 HttpStatusCode.OK -> {
                     result = ApiResult(
                         isSuccess = true,
-                        data = response.body()
+                        response = response.body()
                     )
                 }
 
@@ -171,7 +171,7 @@ class AdminAdapter {
                     val createdId = response.body<CreateItemResponse>().id
                     result = ApiResult(
                         isSuccess = true,
-                        data = hashMapOf(Pair("id", createdId))
+                        response = hashMapOf(Pair("id", createdId))
                     )
                 }
 
@@ -207,7 +207,7 @@ class AdminAdapter {
                 HttpStatusCode.OK -> {
                     result = ApiResult(
                         isSuccess = true,
-                        data = response.body()
+                        response = response.body()
                     )
                 }
 
@@ -241,7 +241,7 @@ class AdminAdapter {
                 HttpStatusCode.OK -> {
                     result = ApiResult(
                         isSuccess = true,
-                        data = response.body()
+                        response = response.body()
                     )
                 }
 
@@ -309,7 +309,7 @@ class AdminAdapter {
                     val createdId = response.body<CreateItemResponse>().id
                     result = ApiResult(
                         isSuccess = true,
-                        data = hashMapOf(Pair("id", createdId))
+                        response = hashMapOf(Pair("id", createdId))
                     )
                 }
 
@@ -345,7 +345,7 @@ class AdminAdapter {
                 HttpStatusCode.OK -> {
                     result = ApiResult(
                         isSuccess = true,
-                        data = response.body()
+                        response = response.body()
                     )
                 }
 
@@ -379,7 +379,7 @@ class AdminAdapter {
                 HttpStatusCode.OK -> {
                     result = ApiResult(
                         isSuccess = true,
-                        data = response.body()
+                        response = response.body()
                     )
                 }
 

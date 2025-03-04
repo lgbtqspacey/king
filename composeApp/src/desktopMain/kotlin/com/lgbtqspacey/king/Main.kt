@@ -14,7 +14,7 @@ fun main()  {
                 onCloseRequest = ::exitApplication,
                 title = "Kit Integrado de Gestão | LGBTQ+Spacey",
             ) {
-                window.minimumSize = Dimension(600, 600)
+                window.minimumSize = Dimension(1280, 720)
 
                 getPlatform().initSentry(getPlatform().version)
                 Napier.base(DebugAntilog())

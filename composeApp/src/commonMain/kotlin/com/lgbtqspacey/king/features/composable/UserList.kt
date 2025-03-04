@@ -53,7 +53,7 @@ fun UserList(
             text = user.pronouns,
             modifier = Modifier
                 .wrapContentHeight()
-                .width(Dimensions.SIZE_72.dp())
+                .width(Dimensions.SIZE_120.dp())
                 .padding(Dimensions.SIZE_4.dp())
                 .constrainAs(pronouns) {
                     top.linkTo(parent.top)
@@ -66,7 +66,7 @@ fun UserList(
             text = user.accessLevel,
             modifier = Modifier
                 .wrapContentHeight()
-                .width(Dimensions.SIZE_72.dp())
+                .width(Dimensions.SIZE_192.dp())
                 .padding(Dimensions.SIZE_4.dp())
                 .constrainAs(accessLevel) {
                     top.linkTo(parent.top)
@@ -89,6 +89,86 @@ fun UserList(
         ) {
             Text("Detalhes")
         }
+
+        HorizontalDivider(
+            modifier = Modifier.constrainAs(divider) {
+                bottom.linkTo(parent.bottom)
+            }
+        )
+    }
+}
+
+@Composable
+fun UserListHeader() {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = Dimensions.SIZE_32.dp())
+            .background(MaterialTheme.colorScheme.secondary),
+    ) {
+        val (
+            name,
+            pronouns,
+            accessLevel,
+            details,
+            divider,
+        ) = createRefs()
+
+        Text(
+            text = "Nome",
+            color = MaterialTheme.colorScheme.onSecondary,
+            modifier = Modifier
+                .wrapContentHeight()
+                .width(Dimensions.SIZE_192.dp())
+                .padding(Dimensions.SIZE_4.dp())
+                .constrainAs(name) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start, Dimensions.SIZE_16.dp())
+                    bottom.linkTo(parent.bottom)
+                }
+        )
+
+        Text(
+            text = "Pronomes",
+            color = MaterialTheme.colorScheme.onSecondary,
+            modifier = Modifier
+                .wrapContentHeight()
+                .width(Dimensions.SIZE_120.dp())
+                .padding(Dimensions.SIZE_4.dp())
+                .constrainAs(pronouns) {
+                    top.linkTo(parent.top)
+                    start.linkTo(name.end, Dimensions.SIZE_16.dp())
+                    bottom.linkTo(parent.bottom)
+                }
+        )
+
+        Text(
+            text = "Nível de acesso",
+            color = MaterialTheme.colorScheme.onSecondary,
+            modifier = Modifier
+                .wrapContentHeight()
+                .width(Dimensions.SIZE_192.dp())
+                .padding(Dimensions.SIZE_4.dp())
+                .constrainAs(accessLevel) {
+                    top.linkTo(parent.top)
+                    start.linkTo(pronouns.end, Dimensions.SIZE_16.dp())
+                    bottom.linkTo(parent.bottom)
+                }
+        )
+
+        Text(
+            text = "Detalhes",
+            color = MaterialTheme.colorScheme.onSecondary,
+            modifier = Modifier
+                .wrapContentHeight()
+                .wrapContentWidth()
+                .padding(Dimensions.SIZE_4.dp())
+                .constrainAs(details) {
+                    top.linkTo(parent.top)
+                    start.linkTo(accessLevel.end, Dimensions.SIZE_16.dp())
+                    bottom.linkTo(parent.bottom)
+                }
+        )
 
         HorizontalDivider(
             modifier = Modifier.constrainAs(divider) {

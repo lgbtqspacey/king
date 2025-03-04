@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
  */
 @Suppress("Unused")
 enum class Dimensions(private val value: Int) {
+    SIZE_1(1),
     SIZE_4(4),
     SIZE_8(8),
     SIZE_12(12),

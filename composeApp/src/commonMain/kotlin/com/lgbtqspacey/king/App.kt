@@ -70,7 +70,7 @@ fun App() {
                     }
 
                     if (loaded) {
-                        if (!isLoggedIn) {
+                        if (isLoggedIn) {
                             navigator.navigate(Screens.HOME)
                         } else {
                             navigator.navigate(Screens.LOGIN)
