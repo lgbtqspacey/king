@@ -45,19 +45,17 @@ fun Users(navigator: Navigator) {
     var errorCode by remember { mutableStateOf("") }
     val userList = mutableListOf<UserSummary>()
 
-    /***********************
-     * Conditional changes *
-     ***********************/
+    /** Conditional changes **/
     coroutineScope.launch {
         val users = AdminAdapter().getUsers()
 
         if (users.isSuccess) {
-            users.responseDetails?.data?.forEach { user ->
+            users.usersSummarized?.data?.forEach { user ->
                 val summary = UserSummary(
-                    id = user["_id"] ?: "",
-                    accessLevel = user["accessLevel"] ?: "",
-                    name = user["name"] ?: "",
-                    pronouns = user["pronouns"] ?: ""
+                    id = user.id ?: "",
+                    accessLevel = user.accessLevel ?: "",
+                    name = user.name ?: "",
+                    pronouns = user.pronouns ?: ""
                 )
 
                 userList.add(summary)
@@ -71,9 +69,7 @@ fun Users(navigator: Navigator) {
         isLoaded = true
     }
 
-    /******
-     * UI *
-     *****/
+    /** UI **/
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -106,9 +102,7 @@ fun Users(navigator: Navigator) {
             Text(stringResource(Res.string.colaborators))
         }
 
-        /**
-         * Animated view to show loading circle while the application fetch the data
-         */
+        /** Animated view to show loading circle while the application fetch the data **/
         AnimatedVisibility(
             visible = !isLoaded,
             modifier = Modifier
@@ -148,9 +142,7 @@ fun Users(navigator: Navigator) {
                 }
             }
 
-            /**
-             * Error container
-             */
+            /** Error container **/
             if (isError) {
                 Box(
                     modifier = Modifier

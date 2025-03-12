@@ -58,6 +58,13 @@ class AdminAdapter {
         return result
     }
 
+    /**
+     * Retrieves all users or an specific user with the given filters.
+     *
+     * @param filter optional filter go get a specific user
+     *
+     * If `filter` is null, returns the users summarized.
+     */
     suspend fun getUsers(filter: FilterUser? = null): ApiResult {
         var result = ApiResult(false, 500, getString(Res.string.something_went_wrong))
 
@@ -67,10 +74,18 @@ class AdminAdapter {
 
             when (response?.status) {
                 HttpStatusCode.OK -> {
-                    result = ApiResult(
-                        isSuccess = true,
-                        responseDetails = response.body()
-                    )
+                    result = if (filter == null) {
+                        ApiResult(
+                            isSuccess = true,
+                            usersSummarized = response.body()
+                        )
+                    } else {
+                        ApiResult(
+                            isSuccess = true,
+                            userDetails = response.body()
+                        )
+
+                    }
                 }
 
                 HttpStatusCode.BadRequest -> {

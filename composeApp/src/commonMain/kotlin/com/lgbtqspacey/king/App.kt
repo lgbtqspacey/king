@@ -21,12 +21,14 @@ import com.lgbtqspacey.king.features.dashboard.Settings
 import com.lgbtqspacey.king.features.people.Profile
 import com.lgbtqspacey.king.features.people.Reports
 import com.lgbtqspacey.king.features.people.Roles
+import com.lgbtqspacey.king.features.people.UserDetails
 import com.lgbtqspacey.king.features.people.Users
 import com.lgbtqspacey.king.helpers.Screens
 import com.lgbtqspacey.king.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.navigation.NavHost
+import moe.tlaster.precompose.navigation.query
 import moe.tlaster.precompose.navigation.rememberNavigator
 
 @Composable
@@ -92,6 +94,11 @@ fun App() {
 
                 scene(Screens.USERS) {
                     Users(navigator)
+                }
+
+                scene(Screens.USER_DETAILS) { backStackEntry ->
+                    val userId: String = backStackEntry.query<String>("userId").toString()
+                    UserDetails(navigator, userId)
                 }
 
                 scene(Screens.REPORTS) {

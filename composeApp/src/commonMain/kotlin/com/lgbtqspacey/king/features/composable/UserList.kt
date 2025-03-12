@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.lgbtqspacey.king.backend.model.UserSummary
 import com.lgbtqspacey.king.helpers.Dimensions
+import com.lgbtqspacey.king.helpers.Screens
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -37,7 +38,7 @@ fun UserList(
         ) = createRefs()
 
         Text(
-            text = user.name,
+            text = user.name ?: "",
             modifier = Modifier
                 .wrapContentHeight()
                 .width(Dimensions.SIZE_192.dp())
@@ -50,7 +51,7 @@ fun UserList(
         )
 
         Text(
-            text = user.pronouns,
+            text = user.pronouns ?: "",
             modifier = Modifier
                 .wrapContentHeight()
                 .width(Dimensions.SIZE_120.dp())
@@ -63,7 +64,7 @@ fun UserList(
         )
 
         Text(
-            text = user.accessLevel,
+            text = user.accessLevel ?: "",
             modifier = Modifier
                 .wrapContentHeight()
                 .width(Dimensions.SIZE_192.dp())
@@ -76,7 +77,9 @@ fun UserList(
         )
 
         Button(
-            onClick = { /* TODO */ },
+            onClick = {
+                navigator.navigate("${Screens.USER_DETAILS}?userId=${user.id}")
+            },
             modifier = Modifier
                 .wrapContentHeight()
                 .wrapContentWidth()

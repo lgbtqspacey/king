@@ -86,12 +86,13 @@ compose.desktop {
         mainClass = "com.lgbtqspacey.king.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Exe, TargetFormat.Msi)
             packageName = "King"
             packageVersion = "1.0.0"
             windows {
                 iconFile.set(project.file("$rootDir/icon.ico"))
                 console = true
+                vendor = "LGBTQ+Spacey"
             }
         }
     }

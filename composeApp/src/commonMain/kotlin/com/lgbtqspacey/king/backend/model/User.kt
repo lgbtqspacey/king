@@ -1,27 +1,36 @@
 package com.lgbtqspacey.king.backend.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
-    val name: String?,
-    val username: String?,
-    val email: String?,
-    val discordId: String?,
-    val roles: List<String>?,
-    val dateOfBirth: String?,
-    val pronouns: String?,
-    val phone: String?,
-    val joinedAt: String?,
-    val createdBy: String?,
-    val leftAt: String?,
-    val password: String?,
-    val accessLevel: String?,
+    @SerialName("_id") val id: String? = null,
+    val name: String? = null,
+    val username: String? = null,
+    val email: String? = null,
+    val discordId: String? = null,
+    val teams: List<Team>? = null,
+    val dateOfBirth: String? = null,
+    val pronouns: String? = null,
+    val phone: String? = null,
+    val joinedAt: String? = null,
+    val createdBy: String? = null,
+    val leftAt: String? = null,
+    val password: String? = null,
+    val accessLevel: String? = null,
 )
 
-data class UserSummary(
-    val id: String,
+@Serializable
+data class Team(
     val name: String,
-    val pronouns: String,
-    val accessLevel: String,
+    val role: String
+)
+
+@Serializable
+data class UserSummary(
+    @SerialName("_id") val id: String? = null,
+    val name: String? = null,
+    val pronouns: String? = null,
+    val accessLevel: String? = null,
 )
